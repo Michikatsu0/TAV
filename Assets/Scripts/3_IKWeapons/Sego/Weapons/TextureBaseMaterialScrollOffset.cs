@@ -22,12 +22,16 @@ public class TextureBaseMaterialScrollOffset : MonoBehaviour
         scrollPosition.y = offSetY * Time.deltaTime;
 
         foreach (var element in scrollMaterial)
-            element.mainTextureOffset += scrollPosition;
-        
-        if (scrollPosition.x >= 264 || scrollPosition.y >= 264)
         {
-            scrollPosition.x = 0;
-            scrollPosition.y = 0;
+            if (element.mainTextureOffset.x >= 264 || element.mainTextureOffset.y >= 264)
+            {
+                element.mainTextureOffset = new Vector2(0, 0);
+            }
+            else
+            {
+                element.mainTextureOffset += scrollPosition;
+            }
+            
         }
     }
 } 

@@ -42,7 +42,7 @@ public class PlayerIKMechanicsResponse : MonoBehaviour
         newWeapon.transform.SetParent(weaponSlots[weaponSlotIndex], false);
         newWeapon.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
         equippedWeapons[weaponSlotIndex] = newWeapon;
-        aimController.animator.Play(Animator.StringToHash("Weapon_" + newWeapon.weaponName), 1);
+        aimController.animator.Play(Animator.StringToHash("Weapon_" + newWeapon.weaponName), 2);
         activeWeaponIndex = weaponSlotIndex;
         //SetActiveWeapon(newWeapon.weaponSlot);
     }

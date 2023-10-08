@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -9,7 +10,6 @@ public class AnimatorPlayerController : MonoBehaviour
 {
     private enum PlayerState
     {
-        Idle,
         Movement,
         IdleBreaker,
         Jump,
@@ -20,15 +20,13 @@ public class AnimatorPlayerController : MonoBehaviour
     private PlayerState currentState;
     private MechanicsController mechanics;
 
-    private string HCMoveZ = "MoveZ";
-    private string HCMoveX = "MoveX";
+    private int HCMoveZ = Animator.StringToHash("MoveZ");
+    private int HCMoveX = Animator.StringToHash("MoveX");
 
-    private string HCIdle = "IsIdle";
-    private string HCMovement = "IsMoving";
-    private string HCIdleBreaker = "IsIdleBreaking";
-    private string HCJump = "IsJumping";
-    private string HCIsGrounded = "IsFalling";
-
+    private int HCMovement = Animator.StringToHash("IsMoving");
+    private int HCIdleBreaker = Animator.StringToHash("IsIdleBreaking");
+    private int HCJump = Animator.StringToHash("IsJumping");
+    private int HCIsGrounded = Animator.StringToHash("IsFalling");
 
     private void Start()
     {
@@ -65,9 +63,6 @@ public class AnimatorPlayerController : MonoBehaviour
     {
         switch (currentState)
         {
-            case PlayerState.Idle:
-                animator.SetBool(HCIdle, false);
-                break;
             case PlayerState.Movement:
                 animator.SetBool(HCMovement, false);
                 break;
@@ -83,9 +78,6 @@ public class AnimatorPlayerController : MonoBehaviour
         }
         switch (newState)
         {
-            case PlayerState.Idle:
-                animator.SetBool(HCIdle, true);
-                break;
             case PlayerState.Movement:
                 animator.SetBool(HCMovement, true);
                 break;
@@ -116,10 +108,9 @@ public class AnimatorPlayerController : MonoBehaviour
             mechanics.Gravity();
             return PlayerState.IsFalling;
         }
-        else if (mechanics.IsMoving())
-            return PlayerState.Movement;
         else
-            return PlayerState.Idle;
+            return PlayerState.Movement;
+        
     }
 
     private void OnDrawGizmosSelected()

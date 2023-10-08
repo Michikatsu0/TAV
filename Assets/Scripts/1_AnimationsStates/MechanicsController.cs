@@ -46,7 +46,7 @@ public class MechanicsController : MonoBehaviour
     public bool IsJumping()
     {
         time = 0;
-        return Input.GetKeyDown(KeyCode.Space);
+        return Input.GetKey(KeyCode.Space) && IsFalling();
     }
 
     public bool IsFalling()
