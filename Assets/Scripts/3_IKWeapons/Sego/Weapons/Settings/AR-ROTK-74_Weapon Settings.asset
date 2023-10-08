@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36fc26956c18fec429d58a4a52f09020, type: 3}
+  m_Name: AR-ROTK-74_Weapon Settings
+  m_EditorClassIdentifier: 
+  tracerEffect: {fileID: 6360981974521278373, guid: 606a81775b0d81746b4a64bf6ef6cb3a, type: 3}
+  colorMuzzle: {r: 0, g: 0.81803536, b: 1, a: 1}
+  maxNumberBounces: 0
+  damage: 4
+  fireRate: 10
+  bulletSpeed: 150
+  bulletDrop: 50
+  maxLifeTime: 5
+  isFiring: 0
+  weaponHitsAudioClips:
+  - {fileID: 8300000, guid: e8a38c5ff8ac90146a46881b76087513, type: 3}
+  - {fileID: 8300000, guid: 7fd5325e6103c1145a04e1b9da0d99ff, type: 3}
+  - {fileID: 8300000, guid: cf19b58d49e9b254a8b816219b409f8f, type: 3}
+  - {fileID: 8300000, guid: 94c32ff5cd043db4dba8b85147449ad8, type: 3}
+  - {fileID: 8300000, guid: da3f013f7195c6e41b2c1b0308258135, type: 3}
+  weaponShootAudioClips:
+  - {fileID: 8300000, guid: 947719fd38845824ba3638af9d8e4e54, type: 3}
+  - {fileID: 8300000, guid: ee4ef2f8f89f0834d8c92266456d0922, type: 3}
+  - {fileID: 8300000, guid: 97b5820b1e079ab4bbbe90e89bd4db5d, type: 3}
+  - {fileID: 8300000, guid: 7e950513b9c6d734e8130770598861f3, type: 3}
+  reloadAudioClip: {fileID: 8300000, guid: 8f268095f67575b44b10ea19a4482b2c, type: 3}
