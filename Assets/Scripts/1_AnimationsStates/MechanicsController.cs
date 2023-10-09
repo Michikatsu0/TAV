@@ -6,9 +6,9 @@ using UnityEngine;
 public class MechanicsController : MonoBehaviour
 {
     [HideInInspector] public CharacterController characterController;
-    [HideInInspector] public Vector3 moveDirection;
+    [HideInInspector] public Vector3 moveDirection, gravityDirection;
     [SerializeField] private LayerMask layerGround;
-    [SerializeField] float groundGravity, airGravity; 
+    [SerializeField] public float maxDistance, groundGravity, airGravity; 
     private float time, delay = 5f;
 
     void Start()
@@ -36,11 +36,11 @@ public class MechanicsController : MonoBehaviour
     public void Gravity()
     {
         if (!IsFalling())
-            moveDirection.y = airGravity;
+            gravityDirection.y = airGravity;
         else
-            moveDirection.y = groundGravity;
+            gravityDirection.y = groundGravity;
         
-        characterController.Move(moveDirection * Time.deltaTime);
+        characterController.Move(gravityDirection * Time.deltaTime);
     }
 
     public bool IsJumping()
@@ -52,7 +52,7 @@ public class MechanicsController : MonoBehaviour
     public bool IsFalling()
     {
         time = 0;
-        if (Physics.SphereCast(transform.position, characterController.radius, Vector3.down, out RaycastHit hit, layerGround))
+        if (Physics.SphereCast(transform.position, characterController.radius, Vector3.down, out RaycastHit hit, maxDistance, layerGround))
             return false;
         else
             return true;

@@ -4058,8 +4058,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.008835426, y: 0.086767666, z: -0.0007695617, w: 0.9961891}
-  m_LocalPosition: {x: -0.007122504, y: 1.57, z: -24.999994}
+  m_LocalRotation: {x: 0.00883544, y: 0.086766735, z: -0.0007695546, w: 0.9961892}
+  m_LocalPosition: {x: -0.007114791, y: 1.57, z: -24.999994}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6272,7 +6272,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1582861109}
-  m_LocalRotation: {x: 0.032241598, y: -0.0008937537, z: 0.00013111634, w: -0.9994798}
+  m_LocalRotation: {x: 0.032241598, y: -0.0008937537, z: 0.00013111657, w: -0.9994798}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6447,7 +6447,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1641173256}
-  m_LocalRotation: {x: 0.05036831, y: -0.0008960374, z: 0.00011488262, w: -0.99873036}
+  m_LocalRotation: {x: 0.0503683, y: -0.0008960299, z: 0.00011488244, w: -0.9987303}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -22803,7 +22803,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2007708174}
   m_LocalRotation: {x: -0.032241598, y: 0.0008937537, z: -0.00013111628, w: -0.9994798}
-  m_LocalPosition: {x: 0.000000002751895, y: 8.567748e-12, z: 4.829664e-10}
+  m_LocalPosition: {x: 0.0000000027518958, y: 8.56767e-12, z: 4.829612e-10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -22971,8 +22971,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2018919712}
-  m_LocalRotation: {x: 0.014056236, y: -0.0008912506, z: 0.00014735374, w: -0.9999008}
-  m_LocalPosition: {x: -0.0000000018351728, y: -2.5864654e-11, z: -3.176774e-10}
+  m_LocalRotation: {x: 0.014056241, y: -0.0008912358, z: 0.00014735221, w: -0.9999008}
+  m_LocalPosition: {x: -0.0000000018351732, y: -2.5864378e-11, z: -3.1767397e-10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -24559,11 +24559,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterController: {fileID: 4086850853944720440}
   moveDirection: {x: 0, y: 3.92, z: 0}
+  gravityDirection: {x: 0, y: 0, z: 0}
   layerGround:
     serializedVersion: 2
     m_Bits: 64
-  groundGravity: 3.92
-  airGravity: -0.27
+  maxDistance: 0
+  groundGravity: -1
+  airGravity: -1
 --- !u!114 &4086850853944720443
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -123,7 +123,7 @@ public class AnimatorPlayerController : MonoBehaviour
             mechanics.Gravity();
             return PlayerState.Jump;
         }
-        else if (mechanics.IsFalling())
+        else if (!mechanics.IsFalling())
         {
             mechanics.Gravity();
             return PlayerState.IsFalling;
@@ -131,11 +131,13 @@ public class AnimatorPlayerController : MonoBehaviour
         else
             return PlayerState.Movement;
     }
-
+    Vector3 center;
     private void OnDrawGizmosSelected()
     {
+        var mechanicsController = GetComponent<MechanicsController>();
+        center.y = -mechanicsController.maxDistance;
         Gizmos.color = Color.red;
         var characterController = GetComponent<CharacterController>();
-        Gizmos.DrawWireSphere(transform.position, characterController.radius);
+        Gizmos.DrawWireSphere(transform.position + center, characterController.radius);
     }
 }
