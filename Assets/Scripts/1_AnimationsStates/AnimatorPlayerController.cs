@@ -1,10 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.ProBuilder.MeshOperations;
+
 [RequireComponent(typeof(MechanicsController))]
 public class AnimatorPlayerController : MonoBehaviour
 {
@@ -19,7 +14,7 @@ public class AnimatorPlayerController : MonoBehaviour
     [HideInInspector] public Animator animator;
     private PlayerState currentState;
     private MechanicsController mechanics;
-
+    private PlayerIKMechanicsResponse iKMechanics;
     private int HCMoveZ = Animator.StringToHash("MoveZ");
     private int HCMoveX = Animator.StringToHash("MoveX");
 
@@ -27,31 +22,56 @@ public class AnimatorPlayerController : MonoBehaviour
     private int HCIdleBreaker = Animator.StringToHash("IsIdleBreaking");
     private int HCJump = Animator.StringToHash("IsJumping");
     private int HCIsGrounded = Animator.StringToHash("IsFalling");
+    private int HCIsAiming = Animator.StringToHash("IsAiming");
 
+    public bool isAiming;
+    int clics = 0;
     private void Start()
     {
         animator = GetComponent<Animator>();
         mechanics = GetComponent<MechanicsController>();
+        iKMechanics = GetComponent<PlayerIKMechanicsResponse>();
         SetState(PlayerState.Movement);
     }
 
     private void Update()
     {
-        
+        if (mechanics.IsAiming())
+        {
+            isAiming = true;
+            clics++;
+            if (clics >= 2)
+            {
+                isAiming = false;
+                clics = 0;
+            }
+        }
+
+        if (isAiming)
+        {
+            animator.SetBool(HCIsAiming, true);
+            iKMechanics.TriggerWeapon(mechanics.IsFiring());
+        }
+        else
+        {
+            animator.SetBool(HCIsAiming, false);
+            iKMechanics.TriggerWeapon(false);
+        }
+
         if (Input.GetKey(KeyCode.LeftShift))
         {
             animator.SetFloat(HCMoveX, mechanics.moveDirection.x);
-            animator.SetFloat(HCMoveZ, mechanics.moveDirection.y);
-            if (mechanics.moveDirection.x != 0 && mechanics.moveDirection.y == 0)
+            animator.SetFloat(HCMoveZ, mechanics.moveDirection.z);
+            if (mechanics.moveDirection.x != 0 && mechanics.moveDirection.z == 0)
             {
                 animator.SetFloat(HCMoveX, mechanics.moveDirection.x / 2);
-                animator.SetFloat(HCMoveZ, mechanics.moveDirection.y / 2);
+                animator.SetFloat(HCMoveZ, mechanics.moveDirection.z / 2);
             }
         }
         else
         {
             animator.SetFloat(HCMoveX, mechanics.moveDirection.x / 2);
-            animator.SetFloat(HCMoveZ, mechanics.moveDirection.y / 2);
+            animator.SetFloat(HCMoveZ, mechanics.moveDirection.z / 2);
         }
         
         PlayerState newState = DeterminateState();
@@ -103,14 +123,13 @@ public class AnimatorPlayerController : MonoBehaviour
             mechanics.Gravity();
             return PlayerState.Jump;
         }
-        else if (!mechanics.IsFalling())
+        else if (mechanics.IsFalling())
         {
             mechanics.Gravity();
             return PlayerState.IsFalling;
         }
         else
             return PlayerState.Movement;
-        
     }
 
     private void OnDrawGizmosSelected()

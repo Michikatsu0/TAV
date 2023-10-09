@@ -9,17 +9,19 @@ public class PlayerIKMechanicsResponse : MonoBehaviour
     [SerializeField] private List<WeaponResponse> equippedWeapons = new List<WeaponResponse>();
     [SerializeField] private List<Transform> weaponSlots = new List<Transform>();
     private Transform aimRayCrossHair;
-    AnimatorPlayerController aimController;
+    Animator animator;
     // Start is called before the first frame update
     void Start()
     {
         aimRayCrossHair = GameObject.Find("Aim_CrossHair").transform;
-        aimController = GetComponent<AnimatorPlayerController>();
+        animator = GetComponent<Animator>();
     }
 
-    void Update()
+    public void TriggerWeapon(bool isAiming)
     {
-        
+        var currentWeapon = GetWeapon(activeWeaponIndex);
+        if (currentWeapon)
+            currentWeapon.weaponSettings.isFiring = isAiming;
     }
 
     private WeaponResponse GetWeapon(int index)
@@ -34,15 +36,14 @@ public class PlayerIKMechanicsResponse : MonoBehaviour
         int weaponSlotIndex = (int)nextWeapon.weaponSlot;
         var newWeapon = GetWeapon(weaponSlotIndex);
         if (newWeapon)
-        {
             Destroy(newWeapon.gameObject);
-        }
+        
         newWeapon = nextWeapon;
         newWeapon.raycastDestination = aimRayCrossHair;
         newWeapon.transform.SetParent(weaponSlots[weaponSlotIndex], false);
         newWeapon.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
         equippedWeapons[weaponSlotIndex] = newWeapon;
-        aimController.animator.Play(Animator.StringToHash("Weapon_" + newWeapon.weaponName), 2);
+        animator.Play(Animator.StringToHash("Weapon_" + newWeapon.weaponName), 2);
         activeWeaponIndex = weaponSlotIndex;
         //SetActiveWeapon(newWeapon.weaponSlot);
     }

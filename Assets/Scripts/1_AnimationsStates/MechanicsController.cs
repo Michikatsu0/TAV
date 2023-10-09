@@ -18,24 +18,24 @@ public class MechanicsController : MonoBehaviour
     private void Update()
     {
         moveDirection.x = Input.GetAxis("Horizontal");
-        moveDirection.y = Input.GetAxis("Vertical");
+        moveDirection.z = Input.GetAxis("Vertical");
     }
 
     public bool IsIdle()
     {
-        return moveDirection.x == 0 && moveDirection.y == 0;
+        return moveDirection.x == 0 && moveDirection.z == 0;
     }
     public bool IsMoving()
     {
         time = 0;
-        return moveDirection.x != 0 || moveDirection.y != 0;
+        return moveDirection.x != 0 || moveDirection.z != 0;
     }
 
     public bool IsGrounded() => characterController.isGrounded;
 
     public void Gravity()
     {
-        if (IsFalling())
+        if (!IsFalling())
             moveDirection.y = airGravity;
         else
             moveDirection.y = groundGravity;
@@ -46,7 +46,7 @@ public class MechanicsController : MonoBehaviour
     public bool IsJumping()
     {
         time = 0;
-        return Input.GetKey(KeyCode.Space) && IsFalling();
+        return Input.GetKey(KeyCode.Space) && !IsFalling();
     }
 
     public bool IsFalling()
@@ -78,13 +78,15 @@ public class MechanicsController : MonoBehaviour
         }
             
     }
-    private float animatorLayer1;
 
     public bool IsAiming()
     {
-        return Input.GetMouseButtonDown(0) && IsIdle();
+        return Input.GetMouseButtonDown(1) && !Input.GetKey(KeyCode.LeftShift);
     }
 
-
+    public bool IsFiring()
+    {
+        return Input.GetMouseButton(0);
+    }
 
 }
