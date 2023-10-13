@@ -1,5 +1,5 @@
 # TAV
-Actualizacion bugs referentes con las animaciones por estados.
+Actualizacion bugs referentes con las animaciones y maquinas de estados.
 
 ![image](https://github.com/Michikatsu0/TAV/assets/68073260/e27b6ba0-fb3d-4da6-afdd-bfad952cdeb0)
 
