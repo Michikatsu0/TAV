@@ -5,10 +5,10 @@ public class AnimatorPlayerController : MonoBehaviour
 {
     private enum PlayerState
     {
+        Idle,
         Movement,
         IdleBreaker,
-        Jump,
-        IsFalling
+        Jump
     }
 
     [HideInInspector] public Animator animator;
@@ -18,14 +18,15 @@ public class AnimatorPlayerController : MonoBehaviour
     private int HCMoveZ = Animator.StringToHash("MoveZ");
     private int HCMoveX = Animator.StringToHash("MoveX");
 
+    private int HCIdle = Animator.StringToHash("IsIdle");
     private int HCMovement = Animator.StringToHash("IsMoving");
     private int HCIdleBreaker = Animator.StringToHash("IsIdleBreaking");
     private int HCJump = Animator.StringToHash("IsJumping");
-    private int HCIsGrounded = Animator.StringToHash("IsFalling");
+    private int HCIsFalling= Animator.StringToHash("IsFalling");
     private int HCIsAiming = Animator.StringToHash("IsAiming");
 
     public bool isAiming;
-    int clics = 0;
+    int clicks = 0;
     private void Start()
     {
         animator = GetComponent<Animator>();
@@ -36,14 +37,18 @@ public class AnimatorPlayerController : MonoBehaviour
 
     private void Update()
     {
+        mechanics.IsFalling();
+
+        animator.SetBool(HCIsFalling, mechanics.IsFalling());
+
         if (mechanics.IsAiming())
         {
             isAiming = true;
-            clics++;
-            if (clics >= 2)
+            clicks++;
+            if (clicks >= 2)
             {
                 isAiming = false;
-                clics = 0;
+                clicks = 0;
             }
         }
 
@@ -60,6 +65,8 @@ public class AnimatorPlayerController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.LeftShift))
         {
+            animator.SetBool(HCIsAiming, false);
+            iKMechanics.TriggerWeapon(false);
             animator.SetFloat(HCMoveX, mechanics.moveDirection.x);
             animator.SetFloat(HCMoveZ, mechanics.moveDirection.z);
             if (mechanics.moveDirection.x != 0 && mechanics.moveDirection.z == 0)
@@ -83,6 +90,9 @@ public class AnimatorPlayerController : MonoBehaviour
     {
         switch (currentState)
         {
+            case PlayerState.Idle:
+                animator.SetBool(HCIdle, false);
+                break;
             case PlayerState.Movement:
                 animator.SetBool(HCMovement, false);
                 break;
@@ -92,12 +102,12 @@ public class AnimatorPlayerController : MonoBehaviour
             case PlayerState.Jump:
                 animator.SetBool(HCJump, false);
                 break;
-            case PlayerState.IsFalling:
-                animator.SetBool(HCIsGrounded, false);
-                break;
         }
         switch (newState)
         {
+            case PlayerState.Idle:
+                animator.SetBool(HCIdle, true);
+                break;
             case PlayerState.Movement:
                 animator.SetBool(HCMovement, true);
                 break;
@@ -106,9 +116,6 @@ public class AnimatorPlayerController : MonoBehaviour
                 break;
             case PlayerState.Jump:
                 animator.SetBool(HCJump, true);
-                break;
-            case PlayerState.IsFalling:
-                animator.SetBool(HCIsGrounded, true);
                 break;
         }
         currentState = newState;
@@ -119,25 +126,12 @@ public class AnimatorPlayerController : MonoBehaviour
         if (mechanics.IsIdleBreaking())
             return PlayerState.IdleBreaker;
         else if (mechanics.IsJumping())
-        {
-            mechanics.Gravity();
             return PlayerState.Jump;
-        }
-        else if (!mechanics.IsFalling())
-        {
-            mechanics.Gravity();
-            return PlayerState.IsFalling;
-        }
-        else
+        else if (mechanics.IsMoving())
             return PlayerState.Movement;
+        else
+            return PlayerState.Idle;
     }
-    Vector3 center;
-    private void OnDrawGizmosSelected()
-    {
-        var mechanicsController = GetComponent<MechanicsController>();
-        center.y = -mechanicsController.maxDistance;
-        Gizmos.color = Color.red;
-        var characterController = GetComponent<CharacterController>();
-        Gizmos.DrawWireSphere(transform.position + center, characterController.radius);
-    }
+
+   
 }

@@ -21,7 +21,9 @@ public class PlayerIKMechanicsResponse : MonoBehaviour
     {
         var currentWeapon = GetWeapon(activeWeaponIndex);
         if (currentWeapon)
-            currentWeapon.weaponSettings.isFiring = isAiming;
+        {
+            PlayerActionsResponse.ActionShootWeaponTrigger?.Invoke(isAiming, currentWeapon);
+        }
     }
 
     private WeaponResponse GetWeapon(int index)

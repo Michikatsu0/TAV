@@ -7,9 +7,10 @@ public class MechanicsController : MonoBehaviour
 {
     [HideInInspector] public CharacterController characterController;
     [HideInInspector] public Vector3 moveDirection, gravityDirection;
-    [SerializeField] private LayerMask layerGround;
-    [SerializeField] public float maxDistance, groundGravity, airGravity; 
+    [SerializeField] private LayerMask isGrounded;
+    [SerializeField] public float centerDistance, groundGravity, airGravity; 
     private float time, delay = 5f;
+    Vector3 centerCharacter;
 
     void Start()
     {
@@ -31,16 +32,14 @@ public class MechanicsController : MonoBehaviour
         return moveDirection.x != 0 || moveDirection.z != 0;
     }
 
-    public bool IsGrounded() => characterController.isGrounded;
-
     public void Gravity()
     {
-        if (!IsFalling())
-            gravityDirection.y = airGravity;
+        if (IsFalling())
+            gravityDirection.y = -airGravity;
         else
-            gravityDirection.y = groundGravity;
+            gravityDirection.y = -groundGravity;
         
-        characterController.Move(gravityDirection * Time.deltaTime);
+        //characterController.Move(gravityDirection * Time.deltaTime);
     }
 
     public bool IsJumping()
@@ -52,7 +51,10 @@ public class MechanicsController : MonoBehaviour
     public bool IsFalling()
     {
         time = 0;
-        if (Physics.SphereCast(transform.position, characterController.radius, Vector3.down, out RaycastHit hit, maxDistance, layerGround))
+
+        centerCharacter = transform.position + new Vector3(0, characterController.height / 2, 0);
+
+        if (Physics.SphereCast(centerCharacter, characterController.radius, Vector3.down, out RaycastHit hit, centerDistance, isGrounded))
             return false;
         else
             return true;
@@ -89,4 +91,14 @@ public class MechanicsController : MonoBehaviour
         return Input.GetMouseButton(0);
     }
 
+
+    Vector3 center;
+
+    private void OnDrawGizmosSelected()
+    {
+        var characterController = GetComponent<CharacterController>();
+        center = transform.position - new Vector3(0, centerDistance - (characterController.height / 2), 0);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(center, characterController.radius);
+    }
 }

@@ -6,5 +6,5 @@ using UnityEngine;
 public static class PlayerActionsResponse
 {
     public static Action<bool> ActionWeaponDeath;
-    public static Action<bool> ActionShootWeaponTrigger;
+    public static Action<bool, WeaponResponse> ActionShootWeaponTrigger;
 }

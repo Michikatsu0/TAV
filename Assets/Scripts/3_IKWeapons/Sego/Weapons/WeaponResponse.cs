@@ -240,9 +240,10 @@ public class WeaponResponse : MonoBehaviour
         audioSource.PlayOneShot(weaponSettings.weaponShootAudioClips[ramdonShootClip], 0.5f);
     }
 
-    public void OnFiringWeapon(bool isFiring)
+    public void OnFiringWeapon(bool isFiring, WeaponResponse weapon)
     {
-        weaponSettings.isFiring = isFiring;
+
+        weapon.weaponSettings.isFiring = isFiring;
     }
 
     private void OnDestroy()
