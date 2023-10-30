@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e79f4073f48f63a43846cb2c09b935cb
+guid: 58ce914ec21cd8b4590a2c7bab4fa8f8
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
@@ -33,24 +33,24 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Walking
+      name: IdleBreaker
       takeName: mixamo.com
       internalID: -203655887218126122
       firstFrame: 0
-      lastFrame: 31
+      lastFrame: 98
       wrapMode: 0
       orientationOffsetY: 0
-      level: 0
+      level: -0.04
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 1
+      loopBlend: 0
       loopBlendOrientation: 0
-      loopBlendPositionY: 0
+      loopBlendPositionY: 1
       loopBlendPositionXZ: 0
       keepOriginalOrientation: 1
-      keepOriginalPositionY: 1
+      keepOriginalPositionY: 0
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
       mirror: 0

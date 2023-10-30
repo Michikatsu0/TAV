@@ -25,7 +25,7 @@ public class AnimatorPlayerController : MonoBehaviour
     private int HCIsFalling= Animator.StringToHash("IsFalling");
     private int HCIsAiming = Animator.StringToHash("IsAiming");
 
-    public bool isAiming;
+    private bool isAiming;
     int clicks = 0;
     private void Start()
     {
@@ -37,9 +37,9 @@ public class AnimatorPlayerController : MonoBehaviour
 
     private void Update()
     {
-        mechanics.IsFalling();
+        mechanics.IsGrounded();
 
-        animator.SetBool(HCIsFalling, mechanics.IsFalling());
+        animator.SetBool(HCIsFalling, mechanics.IsGrounded());
 
         if (mechanics.IsAiming())
         {
@@ -69,11 +69,6 @@ public class AnimatorPlayerController : MonoBehaviour
             iKMechanics.TriggerWeapon(false);
             animator.SetFloat(HCMoveX, mechanics.moveDirection.x);
             animator.SetFloat(HCMoveZ, mechanics.moveDirection.z);
-            if (mechanics.moveDirection.x != 0 && mechanics.moveDirection.z == 0)
-            {
-                animator.SetFloat(HCMoveX, mechanics.moveDirection.x / 2);
-                animator.SetFloat(HCMoveZ, mechanics.moveDirection.z / 2);
-            }
         }
         else
         {
