@@ -5,51 +5,72 @@ using UnityEngine;
 
 public class MechanicsController : MonoBehaviour
 {
+    private AnimatorPlayerController playerAnim;
     [HideInInspector] public CharacterController characterController;
-    [HideInInspector] public Vector3 moveDirection, gravityDirection;
+    [HideInInspector] public Vector3 moveDirection, movementDirection,gravityDirection;
+    [SerializeField] private Transform cam;
     [SerializeField] private LayerMask isGrounded;
-    [SerializeField] public float smoothTime = 0.05f, runSpeed, walkSpeed,centerDistance, jumpForce, groundGravity, airGravity; 
-    private float time, delay = 5f, currentSpeed, rotationSpeed, verticalVelocity = 0;
+    [SerializeField] public float animLayerSmooth1,smoothTime = 0.05f, runSpeed, walkSpeed,centerDistance, jumpForce, groundGravity, airGravity; 
+    [HideInInspector] public bool canJump, isAiming;
+    private float time, delay = 5f, currentSpeed, angle ,rotationSpeed, verticalVelocity = 0;
+    [HideInInspector] public float animLayer1;
     Vector3 centerCharacter;
-    [HideInInspector] public bool canJump;
     void Start()
     {
         characterController = GetComponent<CharacterController>();
+        playerAnim = GetComponent<AnimatorPlayerController>();
     }
     private void FixedUpdate()
     {
-        moveDirection.x = Input.GetAxis("Horizontal");
-        moveDirection.z = Input.GetAxis("Vertical");
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
 
-        Vector3 direction = new Vector3(moveDirection.x, 0f, moveDirection.z).normalized;
-        
+        moveDirection = new Vector3(horizontal, 0f, vertical);
+
         currentSpeed = Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed;
-
-        if (direction.magnitude >= 0.1f)
-        {
-            Vector3 camForward = Camera.main.transform.forward;
-            Vector3 camRight = Camera.main.transform.right;
-
-            camForward.y = 0;
-            camRight.y = 0;
-            camForward.Normalize();
-            camRight.Normalize();
-
-            Vector3 directionMove = camForward * moveDirection.z + camRight * moveDirection.x;
-
-            float targetAngle = Mathf.Atan2(directionMove.x, directionMove.z) * Mathf.Rad2Deg;
-            float angle = Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref rotationSpeed, smoothTime);
         
-            transform.rotation = Quaternion.Euler(0.0f, angle, 0.0f);
-            if (IsMoving() && !Input.GetKey(KeyCode.LeftShift))
-                characterController.Move(directionMove * (currentSpeed * Time.deltaTime));
-            else if (IsMoving() && Input.GetKey(KeyCode.LeftShift))
-                characterController.Move(directionMove.normalized * (currentSpeed * Time.deltaTime));
+        if (playerAnim.animator.GetBool(playerAnim.HCIsAiming))
+        {
+            angle = RotationAim();
+            movementDirection = transform.forward * vertical + transform.right * horizontal;
+        }
+        else
+        {
+            if (moveDirection.magnitude >= 0.1f)
+                angle = RotationMove(moveDirection);
         }
 
+        transform.rotation = Quaternion.Euler(0.0f, angle, 0.0f);
+        
+        if (moveDirection.magnitude >= 0.1f)
+            characterController.Move(movementDirection * (currentSpeed * Time.deltaTime));
+        
         Gravity();
     }
+    
+    public float RotationMove(Vector3 direction)
+    {
+        Vector3 camForward = Camera.main.transform.forward;
+        Vector3 camRight = Camera.main.transform.right;
 
+        camForward.y = 0;
+        camRight.y = 0;
+        camForward.Normalize();
+        camRight.Normalize();
+
+        movementDirection = camForward * direction.z + camRight * direction.x;
+        movementDirection.Normalize();
+        
+        float targetAngle = Mathf.Atan2(movementDirection.x, movementDirection.z) * Mathf.Rad2Deg;
+        return Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref rotationSpeed, smoothTime);
+    }
+    
+    public float RotationAim()
+    {
+        float targetAngle = cam.eulerAngles.y;
+        return Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref rotationSpeed, smoothTime);
+    }
+    
     public bool IsIdle()
     {
         return moveDirection is { x: 0.0f, z: 0.0f };

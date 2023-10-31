@@ -8,7 +8,7 @@ public class CameraPriority : MonoBehaviour
     public CinemachineVirtualCameraBase virtualCamera;
     public DistanceCameraSwitcher distanceCameraSwitcher;
     public bool enable;
-    public CinemachineFreeLook freeLook;
+    public CinemachineVirtualCameraBase freeLook;
     private Transform player;
     private void Start()
     {

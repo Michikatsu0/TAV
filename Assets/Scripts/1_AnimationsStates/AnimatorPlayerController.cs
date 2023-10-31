@@ -23,9 +23,8 @@ public class AnimatorPlayerController : MonoBehaviour
     private int HCIdleBreaker = Animator.StringToHash("IsIdleBreaking");
     private int HCJump = Animator.StringToHash("IsJumping");
     private int HCIsFalling= Animator.StringToHash("IsFalling");
-    private int HCIsAiming = Animator.StringToHash("IsAiming");
-
-    private bool isAiming;
+    [HideInInspector] public int HCIsAiming = Animator.StringToHash("IsAiming");
+    
     int clicks = 0;
     private void Start()
     {
@@ -43,26 +42,30 @@ public class AnimatorPlayerController : MonoBehaviour
 
         if (mechanics.IsAiming())
         {
-            isAiming = true;
+            mechanics.isAiming = true;
             clicks++;
             if (clicks >= 2)
             {
-                isAiming = false;
+                mechanics.isAiming = false;
                 clicks = 0;
             }
         }
 
-        if (isAiming)
+        if (mechanics.isAiming)
         {
-            animator.SetBool(HCIsAiming, true);
+            animator.SetBool(HCIsAiming, mechanics.isAiming);
             iKMechanics.TriggerWeapon(mechanics.IsFiring());
+            mechanics.animLayer1 = Mathf.Lerp(animator.GetLayerWeight(1), 1, mechanics.animLayerSmooth1 * Time.deltaTime);
         }
         else
         {
-            animator.SetBool(HCIsAiming, false);
+            animator.SetBool(HCIsAiming, mechanics.isAiming);
             iKMechanics.TriggerWeapon(false);
+            mechanics.animLayer1 = Mathf.Lerp(animator.GetLayerWeight(1), 0, mechanics.animLayerSmooth1 * Time.deltaTime);
         }
 
+        animator.SetLayerWeight(1, mechanics.animLayer1);
+        
         if (Input.GetKey(KeyCode.LeftShift))
         {
             animator.SetBool(HCIsAiming, false);

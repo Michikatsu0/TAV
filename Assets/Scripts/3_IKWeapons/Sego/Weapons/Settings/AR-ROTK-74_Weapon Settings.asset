@@ -17,8 +17,8 @@ MonoBehaviour:
   maxNumberBounces: 0
   damage: 4
   fireRate: 10
-  bulletSpeed: 150
-  bulletDrop: 50
+  bulletSpeed: 400
+  bulletDrop: 0
   maxLifeTime: 5
   isFiring: 0
   weaponHitsAudioClips:
