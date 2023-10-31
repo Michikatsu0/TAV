@@ -28,3 +28,8 @@ Extras:
 - Sistema de cambio de arma Multi-Parent basado en PickUps
 
 # 🧑‍🔧
+
+Actualizacion IKs: 
+- Apuntado configurado con zoom y un mejor cinemachine.
+
+![image](https://github.com/Michikatsu0/TAV/assets/68073260/5ecc1e2c-4605-4ad1-aa10-7227fdd6bc99)
