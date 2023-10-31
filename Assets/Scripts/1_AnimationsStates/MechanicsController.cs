@@ -6,6 +6,7 @@ using UnityEngine;
 public class MechanicsController : MonoBehaviour
 {
     private AnimatorPlayerController playerAnim;
+    
     [HideInInspector] public CharacterController characterController;
     [HideInInspector] public Vector3 moveDirection, movementDirection,gravityDirection;
     [SerializeField] private Transform cam;
@@ -19,6 +20,7 @@ public class MechanicsController : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
         playerAnim = GetComponent<AnimatorPlayerController>();
+        
     }
     private void FixedUpdate()
     {

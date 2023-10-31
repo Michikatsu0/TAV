@@ -3884,8 +3884,9 @@ GameObject:
   - component: {fileID: 856212915}
   - component: {fileID: 856212913}
   - component: {fileID: 856212914}
+  - component: {fileID: 856212916}
   m_Layer: 0
-  m_Name: CM vcam1
+  m_Name: CM_VC_Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3982,6 +3983,22 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &856212916
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 856212911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4700f9f03ad19f94baf0367cb7a9c988, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Width: 2
+  m_Damping: 1
+  m_MinFOV: 3
+  m_MaxFOV: 40
 --- !u!4 &856320061 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3236818357456883370, guid: f087f214a675bde4aa8891a4b28a0c83, type: 3}
@@ -5431,7 +5448,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: -0.14755042, y: 0, z: 0, w: 0.98905456}
-  m_LocalPosition: {x: 0.66767997, y: 1.719462, z: -28.8}
+  m_LocalPosition: {x: 0.5, y: 1.9076568, z: -28.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5614,17 +5631,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damping: {x: 0.1, y: 0.1, z: 0.1}
-  ShoulderOffset: {x: 1.07, y: 0, z: 0}
-  VerticalArmLength: 0.13
-  CameraSide: 0.812
-  CameraDistance: 4.39
+  ShoulderOffset: {x: 1, y: 0, z: 0}
+  VerticalArmLength: 0.31
+  CameraSide: 0.75
+  CameraDistance: 4
   CameraCollisionFilter:
     serializedVersion: 2
     m_Bits: 65
   IgnoreTag: Player
   CameraRadius: 0.2
   DampingIntoCollision: 0
-  DampingFromCollision: 2
+  DampingFromCollision: 0
 --- !u!114 &1081398410
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -26966,6 +26983,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
+  HCIsZooming: 1969271240
   HCIsAiming: 2025090383
 --- !u!114 &4086850853944720446
 MonoBehaviour:
