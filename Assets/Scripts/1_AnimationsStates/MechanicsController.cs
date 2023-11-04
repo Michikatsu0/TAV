@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class MechanicsController : MonoBehaviour
@@ -42,7 +39,7 @@ public class MechanicsController : MonoBehaviour
                 angle = RotationMove(moveDirection);
         }
 
-        transform.rotation = Quaternion.Euler(0.0f, angle, 0.0f);
+        characterController.transform.rotation = Quaternion.Euler(0.0f, angle, 0.0f);
         
         if (moveDirection.magnitude >= 0.1f)
             characterController.Move(movementDirection * (currentSpeed * Time.deltaTime));
@@ -61,7 +58,6 @@ public class MechanicsController : MonoBehaviour
         camRight.Normalize();
 
         movementDirection = camForward * direction.z + camRight * direction.x;
-        movementDirection.Normalize();
         
         float targetAngle = Mathf.Atan2(movementDirection.x, movementDirection.z) * Mathf.Rad2Deg;
         return Mathf.SmoothDampAngle(transform.eulerAngles.y, targetAngle, ref rotationSpeed, smoothTime);
@@ -77,6 +73,7 @@ public class MechanicsController : MonoBehaviour
     {
         return moveDirection is { x: 0.0f, z: 0.0f };
     }
+    
     public bool IsMoving()
     {
         return moveDirection.x != 0 || moveDirection.z != 0;

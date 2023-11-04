@@ -16,6 +16,8 @@ public class PlayerAiming : MonoBehaviour
     {
         mainCamera = Camera.main;
         characterController = GetComponent<CharacterController>();
+        Cursor.lockState = CursorLockMode.Locked; // Bloquea el cursor en el centro de la pantalla
+        Cursor.visible = false; // Oculta el cursor
     }
 
     // Update is called once per frame

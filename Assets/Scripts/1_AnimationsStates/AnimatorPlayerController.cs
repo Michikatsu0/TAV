@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[RequireComponent(typeof(MechanicsController))]
 public class AnimatorPlayerController : MonoBehaviour
 {
     private enum PlayerState
@@ -23,7 +22,7 @@ public class AnimatorPlayerController : MonoBehaviour
     private int HCIdleBreaker = Animator.StringToHash("IsIdleBreaking");
     private int HCJump = Animator.StringToHash("IsJumping");
     private int HCIsFalling= Animator.StringToHash("IsFalling");
-    public int HCIsZooming = Animator.StringToHash("IsZooming");
+    [HideInInspector] public int HCIsZooming = Animator.StringToHash("IsZooming");
     [HideInInspector] public int HCIsAiming = Animator.StringToHash("IsAiming");
     private Animator cMAnimator;
     int clicks = 0;

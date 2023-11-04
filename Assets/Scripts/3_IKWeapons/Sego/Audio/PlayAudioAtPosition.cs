@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
 
 public static class PlayAudioAtPosition
 {
@@ -10,8 +9,15 @@ public static class PlayAudioAtPosition
         gameObject.transform.position = position;
         AudioSource audioSource = (AudioSource)gameObject.AddComponent(typeof(AudioSource));
         audioSource.clip = clip;
-        audioSource.spatialBlend = 0.5f;
-        audioSource.volume = volume;
+        audioSource.spatialBlend = 1f;
+        audioSource.maxDistance = 100;
+        float distance = Vector3.Distance(position, Camera.main.transform.position);
+        float adjustedVolume = Mathf.Clamp01(1f - (distance / audioSource.maxDistance)) * volume;
+
+        if (adjustedVolume < 0.3f)
+            adjustedVolume = 0.3f;
+        audioSource.volume = adjustedVolume;
+        audioSource.rolloffMode = AudioRolloffMode.Linear;
         audioSource.Play();
         Object.Destroy((Object)gameObject, clip.length * ((double)Time.timeScale < 0.009999999776482582 ? 0.01f : Time.timeScale));
     }

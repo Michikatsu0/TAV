@@ -158,7 +158,7 @@ public class WeaponResponse : MonoBehaviour
             hitEffect.Emit(1);
 
             var ramdonHitClip = Random.Range(0, weaponSettings.weaponHitsAudioClips.Count);
-            PlayAudioAtPosition.PlayClipAtPoint(weaponSettings.weaponHitsAudioClips[ramdonHitClip], hit.point, Random.Range(0.05f,0.1f));
+            PlayAudioAtPosition.PlayClipAtPoint(weaponSettings.weaponHitsAudioClips[ramdonHitClip], hit.point, Random.Range(0.5f, 0.6f));
 
             bullet.time = weaponSettings.maxLifeTime;
             bullet.tracer.transform.position = hit.point;
