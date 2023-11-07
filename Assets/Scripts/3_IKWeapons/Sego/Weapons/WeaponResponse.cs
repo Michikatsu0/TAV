@@ -206,7 +206,7 @@ public class WeaponResponse : MonoBehaviour
 
                 if (playerHitBox)
                 {
-                    playerHitBox.TakeHitBoxDamage(this);
+                    playerHitBox.TakeHitBoxDamage(weaponSettings.damage);
                     if (playerHitBox.healthResponse.currentHealth <= 0.0f)
                         rgbd?.AddForceAtPosition(ray.direction * 1.5f, hit.point, ForceMode.Impulse);
 
@@ -215,12 +215,12 @@ public class WeaponResponse : MonoBehaviour
             else
             {
                 var playerHitBox = hit.collider.GetComponentInChildren<PlayerHitBoxResponse>();
-
+                var rgbdPlayer = hit.collider.GetComponentInChildren<Rigidbody>();
                 if (playerHitBox)
                 {
-                    playerHitBox.TakeHitBoxDamage(this);
+                    playerHitBox.TakeHitBoxDamage(weaponSettings.damage);
                     if (playerHitBox.healthResponse.currentHealth <= 0.0f)
-                        rgbd?.AddForceAtPosition(ray.direction * 1.5f, hit.point, ForceMode.Impulse);
+                        rgbdPlayer?.AddForceAtPosition(ray.direction * 1.5f, hit.point, ForceMode.Impulse);
                     
                 }
             }

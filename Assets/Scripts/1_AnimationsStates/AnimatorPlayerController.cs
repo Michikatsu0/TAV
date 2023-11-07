@@ -25,6 +25,7 @@ public class AnimatorPlayerController : MonoBehaviour
     private int HCJump = Animator.StringToHash("IsJumping");
     private int HCFall= Animator.StringToHash("IsFalling");
     private int HCCrouch = Animator.StringToHash("IsCrouching");
+    private int HCHit = Animator.StringToHash("Hit");
     [HideInInspector] public int HCIsZooming = Animator.StringToHash("IsZooming");
     [HideInInspector] public int HCIsAiming = Animator.StringToHash("IsAiming");
     private Animator cMAnimator;
@@ -63,7 +64,7 @@ public class AnimatorPlayerController : MonoBehaviour
         animator.SetBool(HCIsAiming, mechanics.isAiming);
         cMAnimator.SetBool(HCIsZooming, mechanics.isAiming);
         animator.SetBool(HCCrouch, mechanics.IsCrouching());
-
+        animator.SetBool(HCHit, healthResponse.onHit);
 
         if (mechanics.isAiming)
         {

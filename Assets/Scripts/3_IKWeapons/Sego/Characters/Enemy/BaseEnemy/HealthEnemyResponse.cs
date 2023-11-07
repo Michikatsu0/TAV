@@ -60,7 +60,14 @@ public class HealthEnemyResponse : MonoBehaviour
         currentHealth -= amount;
         currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         blinkTimer = statsEnemySettings.blinkDuration;
+        StartCoroutine(Disable());
+    }
+
+    IEnumerator Disable()
+    {
         onHit = true;
+        yield return new WaitForSeconds(0.015f);
+        onHit = false;
     }
 
     void BlinkColorChanger()

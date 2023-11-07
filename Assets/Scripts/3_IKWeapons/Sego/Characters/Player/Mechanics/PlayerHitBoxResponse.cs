@@ -11,8 +11,8 @@ public class PlayerHitBoxResponse : MonoBehaviour
         healthResponse = GetComponentInParent<PlayerHealthResponse>();
     }
 
-    public void TakeHitBoxDamage(WeaponResponse weapon)
+    public void TakeHitBoxDamage(int damage)
     {
-        healthResponse.TakeDamage(weapon.weaponSettings.damage);
+        healthResponse.TakeDamage(damage);
     }
 }

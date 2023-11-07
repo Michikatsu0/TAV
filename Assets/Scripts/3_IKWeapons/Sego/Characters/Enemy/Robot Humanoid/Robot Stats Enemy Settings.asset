@@ -20,7 +20,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 8674cdb88efbe3d4d96b7d71c34f8858, type: 2}
   - {fileID: 2100000, guid: c2183a6201413824ab80ac7a836a1eae, type: 2}
   armatureColorMaterials:
-  - {r: 0.47058824, g: 0.29411766, b: 0.25882354, a: 1}
+  - {r: 0.307, g: 0.19025353, b: 0.16863382, a: 1}
   - {r: 0.865, g: 0.53935295, b: 0.474902, a: 1}
   sliderColors:
   - {r: 0.2643366, g: 0.9811321, b: 0.11569952, a: 1}

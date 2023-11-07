@@ -19,7 +19,7 @@ public class PlayerHealthResponse : MonoBehaviour
     [SerializeField] private StatsSettings statsSettings;
     [HideInInspector] public RagdollResponse ragdoll;
     public float currentHealth;
-    [HideInInspector] public bool deathScript;
+    [HideInInspector] public bool deathScript, onHit;
 
     
     private SkinnedMeshRenderer skinnedMeshRenderer;
@@ -75,7 +75,7 @@ public class PlayerHealthResponse : MonoBehaviour
         else
             playerImage.color = Color.red * intensity;
 
-        if (blinkTimer > -0.01f)
+        if (blinkTimer > -1f)
             BlinkColorChanger();
 
         healthSlider.value = Mathf.Lerp(healthSlider.value, currentHealth, statsSettings.transitionDamageLerp * Time.deltaTime);
@@ -132,9 +132,14 @@ public class PlayerHealthResponse : MonoBehaviour
         blinkTimer = statsSettings.blinkDuration;
         isRegenerating = false;
         canRegenerate = true;
-        
+        StartCoroutine(Disable());
     }
-
+    IEnumerator Disable()
+    {
+        onHit = true;
+        yield return new WaitForSeconds(0.015f);
+        onHit = false;
+    }
     void ColorChanger()
     {
         Color healthBarColor = Color.Lerp(statsSettings.sliderColors[1], statsSettings.sliderColors[0], healthSlider.value / healthSlider.maxValue);

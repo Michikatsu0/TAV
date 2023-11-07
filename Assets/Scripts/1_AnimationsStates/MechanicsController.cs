@@ -3,7 +3,7 @@ using UnityEngine;
 public class MechanicsController : MonoBehaviour
 {
     private AnimatorPlayerController playerAnim;
-    
+    private PlayerHealthResponse healthResponse;
     [HideInInspector] public CharacterController characterController;
     [HideInInspector] public Vector3 moveDirection, movementDirection, gravityDirection;
     [SerializeField] private Transform cam;
@@ -18,10 +18,13 @@ public class MechanicsController : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
         playerAnim = GetComponent<AnimatorPlayerController>();
-        
+        healthResponse = GetComponent<PlayerHealthResponse>();    
     }
+
     private void FixedUpdate()
     {
+        if (healthResponse.deathScript) return;
+
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 
