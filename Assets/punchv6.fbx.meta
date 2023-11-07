@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 09dae234666d0294cb618fb738dbed05
+guid: 4f9d9cdf26d4b7c4ebed1f3c7ffc6c60
 ModelImporter:
   serializedVersion: 21300
   internalIDToNameTable: []
@@ -49,19 +49,19 @@ ModelImporter:
       takeName: rig|rigAction.001
       internalID: 1444733745673076434
       firstFrame: 0
-      lastFrame: 15
+      lastFrame: 22
       wrapMode: 0
       orientationOffsetY: 0
       level: 0.83
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 1
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
+      keepOriginalOrientation: 1
       keepOriginalPositionY: 1
       keepOriginalPositionXZ: 0
       heightFromFeet: 0
