@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 579d00ea3837fb74e889296156f192da, type: 3}
+  m_Name: Robot Stats Enemy Settings
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  deathTime: 1
+  blinkIntensity: 10
+  blinkDuration: 0.1
+  effectMaterial:
+  - {fileID: 2100000, guid: 8674cdb88efbe3d4d96b7d71c34f8858, type: 2}
+  - {fileID: 2100000, guid: c2183a6201413824ab80ac7a836a1eae, type: 2}
+  armatureColorMaterials:
+  - {r: 0.47058824, g: 0.29411766, b: 0.25882354, a: 1}
+  - {r: 0.865, g: 0.53935295, b: 0.474902, a: 1}
+  sliderColors:
+  - {r: 0.2643366, g: 0.9811321, b: 0.11569952, a: 1}
+  - {r: 0.9245283, g: 0.18752226, b: 0.18752226, a: 1}
+  transitionDamageLerp: 10
+  deathClips:
+  - {fileID: 8300000, guid: 8cb2e47a4aa32c44c9138e9386e99105, type: 3}
+  - {fileID: 8300000, guid: 813dd9e6b4ed5b4408b2bd31cf3e4f30, type: 3}
+  - {fileID: 8300000, guid: c8b500b1927c35043a96ad29558c2ec8, type: 3}
+  - {fileID: 8300000, guid: 210272a6deba5524399f879fdc865bbd, type: 3}
+  footClips:
+  - {fileID: 8300000, guid: ae48bd66cfc8a464a87418cb05f5df59, type: 3}
+  - {fileID: 8300000, guid: 7cb7904a1b70c3e419a519f5ca5c66f0, type: 3}
+  - {fileID: 8300000, guid: 16648d36bc7e5c340a1b7097aa73552a, type: 3}
+  - {fileID: 8300000, guid: 009a12a37a0c3fa44b57ad2131d308ea, type: 3}
+  - {fileID: 8300000, guid: 020fab20789d04948817955a61c1e44b, type: 3}
+  - {fileID: 8300000, guid: 37674bef940ec17449b82bb8baea4395, type: 3}
+  - {fileID: 8300000, guid: a01d3094b25d04a4a872d6832005b4d4, type: 3}
+  - {fileID: 8300000, guid: 263f8aaa01d5d0041b082b7b69d9ca02, type: 3}

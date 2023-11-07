@@ -71,11 +71,13 @@ public class WeaponResponse : MonoBehaviour
         if (isDeath && !weaponEnemy)
         {
             isDeath = false;
+            weaponSettings.isFiring = false;
             rgbd.useGravity = true;
             rgbd.isKinematic = false;
             rgbd.detectCollisions = true;
             foreach (BoxCollider boxCollider in boxColliders)
                 boxCollider.enabled = true;
+            return;
         }
     }
 
@@ -188,36 +190,39 @@ public class WeaponResponse : MonoBehaviour
 
             if (!weaponEnemy)
             {
-                //var enemyHitBox = hit.collider.GetComponent<EnemyHitboxResponse>();
-                //if (enemyHitBox)
-                //{
-                //    enemyHitBox.TakeHitBoxDamage(this);
-                //    if (enemyHitBox.healthEnemy.humanoide)
-                //    {
-                //        if (enemyHitBox.healthEnemy.currentHealth <= 0.0f)
-                //            rgbd.AddForceAtPosition(ray.direction * 5f, hit.point, ForceMode.Impulse);
-                //    }
-                //}
-                    
+                var enemyHitBox = hit.collider.GetComponentInChildren<EnemyHitboxResponse>();
+
+                if (enemyHitBox)
+                {
+                    enemyHitBox.TakeHitBoxDamage(this);
+                    if (enemyHitBox.healthEnemy.humanoide)
+                    {
+                        if (enemyHitBox.healthEnemy.currentHealth <= 0.0f)
+                            rgbd?.AddForceAtPosition(ray.direction * 1.5f, hit.point, ForceMode.Impulse);
+                    }
+                }
+
+                var playerHitBox = hit.collider.GetComponentInChildren<PlayerHitBoxResponse>();
+
+                if (playerHitBox)
+                {
+                    playerHitBox.TakeHitBoxDamage(this);
+                    if (playerHitBox.healthResponse.currentHealth <= 0.0f)
+                        rgbd?.AddForceAtPosition(ray.direction * 1.5f, hit.point, ForceMode.Impulse);
+
+                }
             }
             else
             {
-                //var playerHitBox = hit.collider.GetComponentInChildren<PlayerHitBoxResponse>();
-                
-                //if (playerHitBox)
-                //{
-                //    if (hit.collider.CompareTag("Player"))
-                //    {
-                //        var rgbdPlayer = playerHitBox.healthResponse.ragdoll.rigidbodies;
-                //        playerHitBox.TakeHitBoxDamage(this);
-                //        if (playerHitBox.healthResponse.currentHealth <= 0.0f)
-                //        {
-                //            playerHitBox.healthResponse.ragdoll.ActivateRagdolls();
-                //            foreach (var rigidbody in rgbdPlayer)
-                //                rigidbody.AddForceAtPosition(ray.direction * 1.5f, hit.point, ForceMode.Impulse);
-                //        }
-                //    }   
-                //}
+                var playerHitBox = hit.collider.GetComponentInChildren<PlayerHitBoxResponse>();
+
+                if (playerHitBox)
+                {
+                    playerHitBox.TakeHitBoxDamage(this);
+                    if (playerHitBox.healthResponse.currentHealth <= 0.0f)
+                        rgbd?.AddForceAtPosition(ray.direction * 1.5f, hit.point, ForceMode.Impulse);
+                    
+                }
             }
         }
         else

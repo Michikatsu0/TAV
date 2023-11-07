@@ -7,13 +7,15 @@ public class AnimatorPlayerController : MonoBehaviour
         Idle,
         Movement,
         IdleBreaker,
-        Jump
+        Jump,
+        Crouch
     }
 
     [HideInInspector] public Animator animator;
     private PlayerState currentState;
     private MechanicsController mechanics;
     private PlayerIKMechanicsResponse iKMechanics;
+    private PlayerHealthResponse healthResponse;
     private int HCMoveZ = Animator.StringToHash("MoveZ");
     private int HCMoveX = Animator.StringToHash("MoveX");
 
@@ -21,15 +23,18 @@ public class AnimatorPlayerController : MonoBehaviour
     private int HCMovement = Animator.StringToHash("IsMoving");
     private int HCIdleBreaker = Animator.StringToHash("IsIdleBreaking");
     private int HCJump = Animator.StringToHash("IsJumping");
-    private int HCIsFalling= Animator.StringToHash("IsFalling");
+    private int HCFall= Animator.StringToHash("IsFalling");
+    private int HCCrouch = Animator.StringToHash("IsCrouching");
     [HideInInspector] public int HCIsZooming = Animator.StringToHash("IsZooming");
     [HideInInspector] public int HCIsAiming = Animator.StringToHash("IsAiming");
     private Animator cMAnimator;
     int clicks = 0;
+
     private void Start()
     {
         cMAnimator = GameObject.Find("CM_VC_Player").GetComponent<Animator>();
         animator = GetComponent<Animator>();
+        healthResponse = GetComponent<PlayerHealthResponse>();
         mechanics = GetComponent<MechanicsController>();
         iKMechanics = GetComponent<PlayerIKMechanicsResponse>();
         SetState(PlayerState.Movement);
@@ -37,9 +42,11 @@ public class AnimatorPlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (healthResponse.deathScript) return;
+
         mechanics.IsGrounded();
 
-        animator.SetBool(HCIsFalling, mechanics.IsGrounded());
+        animator.SetBool(HCFall, mechanics.IsGrounded());
 
         if (mechanics.IsAiming())
         {
@@ -55,7 +62,9 @@ public class AnimatorPlayerController : MonoBehaviour
         
         animator.SetBool(HCIsAiming, mechanics.isAiming);
         cMAnimator.SetBool(HCIsZooming, mechanics.isAiming);
-        
+        animator.SetBool(HCCrouch, mechanics.IsCrouching());
+
+
         if (mechanics.isAiming)
         {
             iKMechanics.TriggerWeapon(mechanics.IsFiring());

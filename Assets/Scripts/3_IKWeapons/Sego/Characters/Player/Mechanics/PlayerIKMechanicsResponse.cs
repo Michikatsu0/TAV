@@ -9,21 +9,28 @@ public class PlayerIKMechanicsResponse : MonoBehaviour
     [SerializeField] private List<WeaponResponse> equippedWeapons = new List<WeaponResponse>();
     [SerializeField] private List<Transform> weaponSlots = new List<Transform>();
     private Transform aimRayCrossHair;
-    Animator animator;
+    [HideInInspector] public WeaponResponse currentWeapon;
+    private Animator animator;
+    private PlayerHealthResponse healthResponse;
     // Start is called before the first frame update
     void Start()
     {
+        healthResponse = GetComponent<PlayerHealthResponse>();
         aimRayCrossHair = GameObject.Find("Aim_CrossHair").transform;
         animator = GetComponent<Animator>();
     }
 
     public void TriggerWeapon(bool isAiming)
     {
-        var currentWeapon = GetWeapon(activeWeaponIndex);
-        if (currentWeapon)
-        {
-            PlayerActionsResponse.ActionShootWeaponTrigger?.Invoke(isAiming, currentWeapon);
-        }
+        currentWeapon = GetWeapon(activeWeaponIndex);
+
+        if (!healthResponse.deathScript)
+            if (currentWeapon)
+                PlayerActionsResponse.ActionShootWeaponTrigger?.Invoke(isAiming, currentWeapon);
+        else
+            PlayerActionsResponse.ActionShootWeaponTrigger?.Invoke(false, currentWeapon);
+        
+        
     }
 
     private WeaponResponse GetWeapon(int index)

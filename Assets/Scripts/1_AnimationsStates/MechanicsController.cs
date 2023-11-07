@@ -5,14 +5,15 @@ public class MechanicsController : MonoBehaviour
     private AnimatorPlayerController playerAnim;
     
     [HideInInspector] public CharacterController characterController;
-    [HideInInspector] public Vector3 moveDirection, movementDirection,gravityDirection;
+    [HideInInspector] public Vector3 moveDirection, movementDirection, gravityDirection;
     [SerializeField] private Transform cam;
     [SerializeField] private LayerMask isGrounded;
-    [SerializeField] public float animLayerSmooth1,smoothTime = 0.05f, runSpeed, walkSpeed,centerDistance, jumpForce, groundGravity, airGravity; 
+    [SerializeField] public float animLayerSmooth1,smoothTime = 0.05f, runSpeed, walkSpeed, centerDistance, jumpForce, groundGravity, airGravity, crouchHeight, standHeight, crouchSpeed, centerCrouch; 
     [HideInInspector] public bool canJump, isAiming;
     private float time, delay = 5f, currentSpeed, angle ,rotationSpeed, verticalVelocity = 0;
     [HideInInspector] public float animLayer1;
     Vector3 centerCharacter;
+
     void Start()
     {
         characterController = GetComponent<CharacterController>();
@@ -26,8 +27,16 @@ public class MechanicsController : MonoBehaviour
 
         moveDirection = new Vector3(horizontal, 0f, vertical);
 
-        currentSpeed = Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed;
+        if (Input.GetKey(KeyCode.LeftShift))
+            currentSpeed = runSpeed;
+        else
+        {
+            currentSpeed = walkSpeed;
+            if (IsCrouching())
+                currentSpeed = crouchSpeed;
+        }
         
+
         if (playerAnim.animator.GetBool(playerAnim.HCIsAiming))
         {
             angle = RotationAim();
@@ -44,7 +53,8 @@ public class MechanicsController : MonoBehaviour
         if (moveDirection.magnitude >= 0.1f)
             characterController.Move(movementDirection * (currentSpeed * Time.deltaTime));
         
-        Gravity();
+        Gravity(); 
+        Crouch();
     }
     
     public float RotationMove(Vector3 direction)
@@ -79,6 +89,26 @@ public class MechanicsController : MonoBehaviour
         return moveDirection.x != 0 || moveDirection.z != 0;
     }
 
+    public void Crouch()
+    {
+        if (IsCrouching())
+        {
+            characterController.height = crouchHeight;
+            centerCharacter.y = centerCrouch;
+            characterController.center = centerCharacter;
+        }
+        else
+        {
+            characterController.height = standHeight;
+            characterController.center = Vector3.zero;
+        }
+    }
+
+    public bool IsCrouching()
+    {
+        return Input.GetKey(KeyCode.C) && !IsAiming() && !Input.GetKey(KeyCode.LeftShift);
+    }
+
     public void Gravity()
     {
         if (characterController.isGrounded)
@@ -106,7 +136,15 @@ public class MechanicsController : MonoBehaviour
 
     public bool IsJumping()
     {
-        return Input.GetKey(KeyCode.Space) && IsGrounded();
+        if (IsGrounded())
+        {
+            if (Input.GetKey(KeyCode.Space))
+                return true;
+            else
+                return false;
+        }
+        else
+            return false;
     }
 
     public bool IsGrounded()

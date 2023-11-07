@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting;
+using Unity.Burst.CompilerServices;
 /// <summary>
 /// changed the max health multiplying it with the modifier
 /// also changed the regen speed and regen time
@@ -16,23 +17,21 @@ using Unity.VisualScripting;
 public class PlayerHealthResponse : MonoBehaviour
 {
     [SerializeField] private StatsSettings statsSettings;
-
+    [HideInInspector] public RagdollResponse ragdoll;
     public float currentHealth;
+    [HideInInspector] public bool deathScript;
 
-    private float blinkTimer, intensity, tmpTimeToRegenerate,regenerateValue = 0;
+    
     private SkinnedMeshRenderer skinnedMeshRenderer;
     private CharacterController characterController;
-    public RagdollResponse ragdoll;
+    private PlayerIKMechanicsResponse playerIKMechanics;
     private Slider healthSlider;
     private Image fillImage, playerImage;
-    private TextMeshProUGUI textMeshPro;
-    private bool canRegenerate = true, isRegenerating, deathScript;
+    private TextMeshProUGUI tMPHealth;
 
-    float FinalMaxHealth;
-    float FinalRegenerableHealth;
-    float FinalRegenTime;
-    float FinalRegenSpeed;
-
+    private float blinkTimer, intensity, tmpTimeToRegenerate, regenerateValue = 0;
+    private bool canRegenerate = true, isRegenerating;
+    
     private void Start()
     {
         var rgbds = GetComponentsInChildren<Rigidbody>();
@@ -52,14 +51,14 @@ public class PlayerHealthResponse : MonoBehaviour
 
         playerImage = GameObject.Find("Player_Image").GetComponent<Image>();
 
-        textMeshPro = healthSlider.gameObject.GetComponentInChildren<TextMeshProUGUI>();
+        tMPHealth = healthSlider.gameObject.GetComponentInChildren<TextMeshProUGUI>();
 
         ragdoll = GetComponentInChildren<RagdollResponse>();
         characterController = GetComponent<CharacterController>();
+        playerIKMechanics = GetComponent<PlayerIKMechanicsResponse>();
+        currentHealth = statsSettings.maxHealth; //max health changed
 
-        currentHealth = FinalMaxHealth; //max health changed
-
-        healthSlider.maxValue = FinalMaxHealth; //here too
+        healthSlider.maxValue = statsSettings.maxHealth; //here too
         healthSlider.value = currentHealth;
 
     }
@@ -81,7 +80,7 @@ public class PlayerHealthResponse : MonoBehaviour
 
         healthSlider.value = Mathf.Lerp(healthSlider.value, currentHealth, statsSettings.transitionDamageLerp * Time.deltaTime);
         int  stringHealth = (int)healthSlider.value;
-        textMeshPro.text = stringHealth.ToString();
+        tMPHealth.text = stringHealth.ToString();
 
         if (deathScript) return;
 
@@ -98,14 +97,14 @@ public class PlayerHealthResponse : MonoBehaviour
         {
             playerImage.color = Color.green * 1;
             regenerateValue += Time.deltaTime; 
-            currentHealth = regenerateValue * FinalRegenSpeed; //regeneration speed changed
+            currentHealth = regenerateValue * statsSettings.regenerationSpeed; //regeneration speed changed
 
             if (healthSlider.value >= 10.0f)
             {
                 canRegenerate = true;
                 isRegenerating = false;
                 regenerateValue = 0;
-                tmpTimeToRegenerate = FinalRegenTime; //here we will change the time to regenerate
+                tmpTimeToRegenerate = statsSettings.timeToRegenerate; //here we will change the time to regenerate
             }
         }
     }
@@ -129,7 +128,7 @@ public class PlayerHealthResponse : MonoBehaviour
     public void TakeDamage(float amount) //Changes the current Health, public so enemydamage can access it. When damaged, starts the timer for invencibility
     {
         currentHealth -= amount;
-        currentHealth = Mathf.Clamp(currentHealth, 0, FinalMaxHealth);
+        currentHealth = Mathf.Clamp(currentHealth, 0, statsSettings.maxHealth);
         blinkTimer = statsSettings.blinkDuration;
         isRegenerating = false;
         canRegenerate = true;
@@ -144,6 +143,7 @@ public class PlayerHealthResponse : MonoBehaviour
 
     public void IsDeath()
     {
+
         if (currentHealth <= 0.0f)
             StartCoroutine(DeathCoroutine());
 
@@ -154,8 +154,9 @@ public class PlayerHealthResponse : MonoBehaviour
     IEnumerator DeathCoroutine() //waits for the destruction of the player, use and adjust the time for a death animation
     {
         deathScript = true;
-        
-        
+        ragdoll.ActivateRagdolls();
+            
+        PlayerActionsResponse.ActionWeaponDeath?.Invoke(true);
         characterController.enabled = false;
         yield return new WaitForSeconds(statsSettings.deathTime);
     }

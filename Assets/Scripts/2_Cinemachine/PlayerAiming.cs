@@ -12,10 +12,12 @@ public class PlayerAiming : MonoBehaviour
 
     private Camera mainCamera;
     private CharacterController characterController;
+    private PlayerHealthResponse healthResponse;
     void Start()
     {
         mainCamera = Camera.main;
         characterController = GetComponent<CharacterController>();
+        healthResponse = GetComponent<PlayerHealthResponse>();
         Cursor.lockState = CursorLockMode.Locked; // Bloquea el cursor en el centro de la pantalla
         Cursor.visible = false; // Oculta el cursor
     }
@@ -23,6 +25,8 @@ public class PlayerAiming : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (healthResponse.deathScript) return;
+
         xAxis.Update(Time.fixedDeltaTime);
         yAxis.Update(Time.fixedDeltaTime);
 
