@@ -27,9 +27,32 @@ Extras:
 
 - Sistema de cambio de arma Multi-Parent basado en PickUps
 
-# 🧑‍🔧
+- Armas
+
+# !!! FINALL !!!! 🧑‍🔧
 
 Actualizacion IKs: 
 - Apuntado configurado con zoom y un mejor cinemachine.
 
 ![image](https://github.com/Michikatsu0/TAV/assets/68073260/5ecc1e2c-4605-4ad1-aa10-7227fdd6bc99)
+
+- Enemigo añadido, vida, hitboxes + animhit y UI.
+
+![image](https://github.com/Michikatsu0/TAV/assets/68073260/b285d52d-6e54-4737-b908-1740d36c0b09)
+
+## Autoevaluacion y Extras del proyecto
+
+- Se cumple con dos personajes rigegeados por el equipo
+- Se cumple con un set completo de animaciones necesarias para representar las mecanicas acciones e interacciones de los personajes
+- Se cumple con que estas animaciones se integran utilizando maquinas de estados, o en algunas cosas para algunas animaciones se utilizan cajas negras para leer estos datos y reaacion sin necesidad de tomar en cuenta los otros o algunos de ellos.
+- Se cumple con el uso de cinemachine para implementar una camara para personajes en tercera persona equipado con un zoom de apuntado estilo GTA V, tambien cuenta con la opcion de las transiciones de caaras virtuales en la escena cuando se entra en el rango del collider que encierra el respectivo foco de luz.
+- Se cumple con la interactividad de los personajes al 100% mostrando cada uno de sus estados de animaciones posibles (en la presentacion olvide mostrar el idle break que se activa con el tiempo).
+
+En cuanto a Animaciones
+
+- Se logra captar el concepto de movimiento siendo catalogado como bueno, por lo que deberia y esta abierto a mejoras en cuanto a fluides y tematica de personaje por el lado de algunas animaciones de apuntado y algunas hacia los lados del personaje main. por otro lado creo que las demas animaciones cumplen de manera optima y no es necesario sujetarlas a mejoras aunque si podrian hacerce.
+
+Extras
+
+- Implementacion de sonido de balas y al disparar la bala del muzzle y al rebotar en una superficie de manera eficiente y auditivamente acorde a la distacia del choque del impacto de la bala asi que si disparas cerca se escucha fuerte al maximo pero si dispara lejos se escuchará pero en menor grado segun un valor clampeado basado en la distancia del impacto de la bala y el player.
+- Implementacion de sistema de armas basado de IKs para apuntado y cambio de arma.
