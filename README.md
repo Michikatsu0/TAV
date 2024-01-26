@@ -1,5 +1,5 @@
 # TAV Taller de Animación para Videojuegos
-En este repositorio se trabaja la implementacion de mecanicas animadas de juegos AAA en tercera persona, se trabaja con el equipo para consolidar las animaciones principales de los personajes que se podrán encontrar aquí como las mecanicas basicas de un juego AAA de forma simultanea y en conjunto, (como programador se trabaja con el paquete Animation Rigging Package (ARP) para implementar mecanicas IK's interesantes de apuntado de cualquier tipo de arma sin usar mixamo)
+En este repositorio se trabaja la implementacion de mecanicas animadas de juegos AAA en tercera persona y se materializan las animaciones principales de los personajes que se podrán encontrar aquí como las mecanicas basicas de un juego AAA de forma conjunta, como programador principal y unico se trabaja con el paquete Animation Rigging Package (ARP) para implementar mecanicas IK's interesantes de apuntado de cualquier tipo de arma sin usar mixamo
 
 - Todas las animaciones de movimientos basicos son de la autoria de mis compañeros Tomas Alvares y Andres Arango Velez.
 
