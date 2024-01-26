@@ -49,7 +49,7 @@ Actualizacion IKs:
 
 ## Autoevaluacion y Extras del proyecto
 
-- Se cumple con dos personajes rigegeados por el equipo
+- Se cumple con dos personajes riggeados por el equipo
 - Se cumple con un set completo de animaciones necesarias para representar las mecanicas acciones e interacciones de los personajes
 - Se cumple con que estas animaciones se integran utilizando maquinas de estados, o en algunas cosas para algunas animaciones se utilizan cajas negras para leer estos datos y reaacion sin necesidad de tomar en cuenta los otros o algunos de ellos.
 - Se cumple con el uso de cinemachine para implementar una camara para personajes en tercera persona equipado con un zoom de apuntado estilo GTA V, tambien cuenta con la opcion de las transiciones de caaras virtuales en la escena cuando se entra en el rango del collider que encierra el respectivo foco de luz.
