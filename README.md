@@ -1,11 +1,12 @@
 # TAV Taller de Animación para Videojuegos
-En este repositorio se trabaja la implementacion de mecanicas animadas de juegos AAA en tercera persona, se trabaja con el equipo para consolidar las animaciones principales de los personajes que se podran encontrar aqui como las mecanicas basicas de un juego AAA de forma simultanea y en conjunto, (como programador se trabaja con el paquete Animation Rigging Package (ARP) para implementar mecanicas IK's interesantes de apuntado de cualquier tipo de arma sin usar mixamo)
+En este repositorio se trabaja la implementacion de mecanicas animadas de juegos AAA en tercera persona, se trabaja con el equipo para consolidar las animaciones principales de los personajes que se podrán encontrar aquí como las mecanicas basicas de un juego AAA de forma simultanea y en conjunto, (como programador se trabaja con el paquete Animation Rigging Package (ARP) para implementar mecanicas IK's interesantes de apuntado de cualquier tipo de arma sin usar mixamo)
 
-Todas las animaciones de movimientos basicas son de la autoria de mis compañeros Tomas Alvares y Andres Arango Velez.
-La animacion del arma llevandose a la espalda y de apuntado es solamente de mi autoria Sebastian Segovia Medina y es un ejemplo del pótencial que tienen el Paquete ARP para hacer mecanicas con IK's
+- Todas las animaciones de movimientos basicos son de la autoria de mis compañeros Tomas Alvares y Andres Arango Velez.
+
+- La animacion del arma llevandose a la espalda y de apuntado es solamente de mi autoria Sebastian Segovia Medina y es un ejemplo del potencial que tiene el Paquete ARP para hacer mecanicas con IK's
 
 
-Actualizacion bugs referentes con las animaciones y maquinas de estados.
+Actualización bugs referentes con las animaciones y maquinas de estados.
 
 ![image](https://github.com/Michikatsu0/TAV/assets/68073260/e27b6ba0-fb3d-4da6-afdd-bfad952cdeb0)
 
