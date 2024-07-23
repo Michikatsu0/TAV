@@ -54,7 +54,7 @@ public class MechanicsController : MonoBehaviour
         characterController.transform.rotation = Quaternion.Euler(0.0f, angle, 0.0f);
         
         if (moveDirection.magnitude >= 0.1f)
-            characterController.Move(movementDirection * (currentSpeed * Time.deltaTime));
+            characterController.Move(movementDirection.normalized * (currentSpeed * Time.deltaTime));
         
         Gravity(); 
         Crouch();

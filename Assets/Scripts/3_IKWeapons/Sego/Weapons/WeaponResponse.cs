@@ -160,7 +160,7 @@ public class WeaponResponse : MonoBehaviour
             hitEffect.Emit(1);
 
             var ramdonHitClip = Random.Range(0, weaponSettings.weaponHitsAudioClips.Count);
-            PlayAudioAtPosition.PlayClipAtPoint(weaponSettings.weaponHitsAudioClips[ramdonHitClip], hit.point, Random.Range(0.5f, 0.6f));
+            PlayAudioAtPosition.PlayClipAtPoint(weaponSettings.weaponHitsAudioClips[ramdonHitClip], hit.point, Random.Range(0.85f, 1f));
 
             bullet.time = weaponSettings.maxLifeTime;
             bullet.tracer.transform.position = hit.point;
@@ -247,7 +247,6 @@ public class WeaponResponse : MonoBehaviour
 
     public void OnFiringWeapon(bool isFiring, WeaponResponse weapon)
     {
-
         weapon.weaponSettings.isFiring = isFiring;
     }
 

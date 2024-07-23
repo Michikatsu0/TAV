@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tracerEffect: {fileID: 6360981974521278373, guid: 606a81775b0d81746b4a64bf6ef6cb3a, type: 3}
   colorMuzzle: {r: 0, g: 0.81803536, b: 1, a: 1}
-  maxNumberBounces: 5
+  maxNumberBounces: 0
   damage: 4
   fireRate: 10
   bulletSpeed: 400

@@ -12,7 +12,7 @@ public class CameraPriority : MonoBehaviour
     private Transform player;
     private void Start()
     {
-        player = GameObject.Find("__CharactersPlayers__").transform;
+        player = GameObject.Find("__Characters__").transform;
     }
 
     private void OnTriggerEnter(Collider other)
