@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Base Data Cam Stats", order = 1)]
-public class CameraSettings : ScriptableObject, ISerializationCallbackReceiver
+public class StatsCamEnemy : ScriptableObject, ISerializationCallbackReceiver
 {
     [Header("Detection Settings")]
     [SerializeField] public float detectionRange;

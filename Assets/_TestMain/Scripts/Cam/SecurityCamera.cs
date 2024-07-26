@@ -5,7 +5,7 @@ using static UnityEditor.SceneView;
 
 public class SecurityCamera : MonoBehaviour
 {
-    [SerializeField] private CameraSettings settings;
+    [SerializeField] private StatsCamEnemy settings;
     [SerializeField] private Transform player;
     [SerializeField] private Renderer cameraLens;
     [SerializeField] private Slider detectionSlider;
