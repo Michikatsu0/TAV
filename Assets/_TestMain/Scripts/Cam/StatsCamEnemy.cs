@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,10 +7,10 @@ public class StatsCamEnemy : ScriptableObject, ISerializationCallbackReceiver
     [Header("Detection Settings")]
     [SerializeField] public float detectionRange;
     [SerializeField] public float detectionTime;
+
     [Header("Lens Colors")]
-    [SerializeField] public Color patrolColor;
-    [SerializeField] public Color alertColor;
-    [SerializeField] public Color attackColor;
+    [SerializeField] public Gradient ColorG;
+
     [Header("Alert Settings")]
     [SerializeField] public float alertDuration;
     [SerializeField] public float transitionDamageLerp;

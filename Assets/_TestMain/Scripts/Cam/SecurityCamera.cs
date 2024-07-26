@@ -1,41 +1,39 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.SceneView;
 
 public class SecurityCamera : MonoBehaviour
 {
     [SerializeField] private StatsCamEnemy settings;
     [SerializeField] private Transform player;
-    [SerializeField] private Renderer cameraLens;
     [SerializeField] private Slider detectionSlider;
+    [SerializeField] private Image fillImage;
 
     private float detectionTimer = 0f;
     private int alertLevel = 0;
-    private Image fillImage;
-    private Transform cam;
+    private Transform MainCam;
     private float alertCooldownTimer = 0f;
 
     void Start()
     {
-        cam = Camera.main.transform;
-        SetCameraState(settings.patrolColor, 0);
+        MainCam = Camera.main.transform;
+        SetCameraState(0);
         detectionSlider.maxValue = settings.detectionTime;
         detectionSlider.value = 0;
-        fillImage = detectionSlider.fillRect.GetComponent<Image>();
     }
 
     void Update()
     {
-        detectionSlider.transform.rotation = cam.rotation;
+        detectionSlider.transform.rotation = MainCam.rotation;
 
         if (alertLevel > 0)
         {
             alertCooldownTimer -= Time.deltaTime;
             if (alertCooldownTimer <= 0)
             {
-                SetCameraState(settings.patrolColor, 0);
+                SetCameraState(0);
                 detectionTimer = 0f;
+                detectionSlider.value = 0f;
             }
         }
 
@@ -52,7 +50,7 @@ public class SecurityCamera : MonoBehaviour
             detectionTimer += Time.deltaTime;
             if (detectionTimer >= settings.detectionTime && alertLevel == 0)
             {
-                SetCameraState(settings.alertColor, 1);
+                SetCameraState(1);
             }
         }
         else
@@ -64,15 +62,14 @@ public class SecurityCamera : MonoBehaviour
     void UpdateDetectionSlider()
     {
         detectionSlider.value = Mathf.Lerp(detectionSlider.value, detectionTimer, settings.transitionDamageLerp * Time.deltaTime);
+        UIColorChanger();
     }
 
-    void SetCameraState(Color lensColor, int level)
+    void SetCameraState(int level)
     {
-        cameraLens.material.color = lensColor;
         alertLevel = level;
         alertCooldownTimer = settings.alertDuration;
 
-        // Additional logic for different alert levels
         if (alertLevel == 1)
         {
             StartCoroutine(AlertEnemies());
@@ -85,8 +82,13 @@ public class SecurityCamera : MonoBehaviour
 
     IEnumerator AlertEnemies()
     {
-        // Logic to alert enemies
-        // For example, you can find nearby enemies and set them to patrol the area
-        yield return new WaitForSeconds(1f); // Placeholder delay
+        // Aquí lógica para encontrar enemigos cercanos y hacer que patrullen la zona
+        yield return new WaitForSeconds(1f); // Temporizador de ejemplo
+    }
+
+    void UIColorChanger()
+    {
+        Color detectionBarColor = settings.ColorG.Evaluate(detectionSlider.value / detectionSlider.maxValue);
+        fillImage.color = detectionBarColor;
     }
 }
