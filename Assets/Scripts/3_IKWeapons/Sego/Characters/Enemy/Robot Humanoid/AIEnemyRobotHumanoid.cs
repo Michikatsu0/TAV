@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEngine.Rendering.DebugUI;
 
 public class AIEnemyRobotHumanoid : MonoBehaviour
 {
@@ -18,7 +17,6 @@ public class AIEnemyRobotHumanoid : MonoBehaviour
     private int HCAttack = Animator.StringToHash("Attack");
     private int HCHit = Animator.StringToHash("Hit");
 
-    
     void Start()
     {
         playerPosition = GameObject.Find("PlayerArmature").transform;
@@ -37,8 +35,6 @@ public class AIEnemyRobotHumanoid : MonoBehaviour
             agent.isStopped = true;
             return;
         }
-        else
-            agent.SetDestination(playerPosition.position);
 
         animator.SetBool(HCHit, healthResponse.onHit);
         animator.SetFloat(HCSpeed, agent.velocity.magnitude);
@@ -57,6 +53,12 @@ public class AIEnemyRobotHumanoid : MonoBehaviour
             agent.isStopped = false;
         }
     }
+
+    public void FollowPlayer()
+    {
+        agent.SetDestination(playerPosition.position);
+    }
+
 
     private void Attack(AnimationEvent animationEvent)
     {
