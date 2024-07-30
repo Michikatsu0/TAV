@@ -47,15 +47,16 @@ public class TurretEnemy : MonoBehaviour
                 }
             }
         }
-        else if (alertLevel == 2)
+        else if (alertLevel >= 2)
         {
-            
             turretWeapon.AttackPlayer(player);
+
         }
 
         if (alertLevel == 0)
         {
             Patrol();
+            
         }
 
         DetectPlayer();

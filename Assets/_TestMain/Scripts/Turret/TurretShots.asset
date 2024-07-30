@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TurretShots
   m_EditorClassIdentifier: 
   tracerEffect: {fileID: 6360981974521278373, guid: 606a81775b0d81746b4a64bf6ef6cb3a, type: 3}
-  colorMuzzle: {r: 1, g: 0.9975273, b: 0, a: 0}
+  colorMuzzle: {r: 0, g: 0.8666668, b: 1, a: 0}
   maxNumberBounces: 0
   damage: 0
   fireRate: 25

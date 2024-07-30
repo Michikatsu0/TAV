@@ -854,7 +854,6 @@ GameObject:
   - component: {fileID: 107559613}
   - component: {fileID: 107559612}
   - component: {fileID: 107559611}
-  - component: {fileID: 107559615}
   - component: {fileID: 107559614}
   m_Layer: 0
   m_Name: Turret-Floor
@@ -881,7 +880,6 @@ Transform:
   - {fileID: 74880399}
   - {fileID: 1203779515}
   - {fileID: 1465515525}
-  - {fileID: 199892329}
   m_Father: {fileID: 1504928215}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -966,22 +964,7 @@ MonoBehaviour:
   - {fileID: 159586237}
   movingTransform: {fileID: 1315362326}
   rotatingTransform: {fileID: 1315362326}
-  turretWeapon: {fileID: 107559615}
---- !u!114 &107559615
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 107559609}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed924854594840242a7e55651a0109b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponSettings: {fileID: 11400000, guid: 439b4db67d7b0844e8ae178ff1fb6e35, type: 2}
-  muzzleEffects: []
-  raycastOrigin: {fileID: 199892329}
+  turretWeapon: {fileID: 256914352}
 --- !u!1 &114587000
 GameObject:
   m_ObjectHideFlags: 0
@@ -1491,13 +1474,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 199892328}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.377, z: -2.047}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071067}
+  m_LocalPosition: {x: 0, y: 0.020732818, z: -0.00016970932}
+  m_LocalScale: {x: 0.01, y: 0.010000002, z: 0.010000002}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 107559610}
-  m_RootOrder: 6
+  m_Father: {fileID: 256914351}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &205561284
 GameObject:
@@ -2148,6 +2131,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 256914351}
+  - component: {fileID: 256914352}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -2168,9 +2152,25 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1604406487}
+  - {fileID: 199892329}
   m_Father: {fileID: 1784405459}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &256914352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 256914350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed924854594840242a7e55651a0109b6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponSettings: {fileID: 11400000, guid: 439b4db67d7b0844e8ae178ff1fb6e35, type: 2}
+  muzzleEffects: []
+  raycastOrigin: {fileID: 1315362326}
 --- !u!1 &257007079
 GameObject:
   m_ObjectHideFlags: 0
@@ -12113,7 +12113,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1315362325}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.78, z: -7.03}
+  m_LocalPosition: {x: -0.042, y: 1.387, z: -1.973}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
