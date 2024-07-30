@@ -1,16 +1,15 @@
-using System.Collections.Generic; 
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SecurityCamera : MonoBehaviour
+public class TurretEnemy : MonoBehaviour
 {
-    [SerializeField] private StatsCamEnemy settings;
+    [SerializeField] private StatsTurretEnemy settings;
     [SerializeField] private Transform player;
     [SerializeField] private Slider detectionSlider;
     [SerializeField] private Image fillImage;
     [SerializeField] private Transform[] patrolPoints;
     [SerializeField] private Transform movingTransform, rotatingTransform;
-    [SerializeField] private List<AIEnemyRobotHumanoid> enemyRobots; 
 
     private float detectionTimer = 0f;
     private int alertLevel = 0;
@@ -18,20 +17,20 @@ public class SecurityCamera : MonoBehaviour
     private float alertCooldownTimer = 0f;
     private int currentPatrolPoint = 0;
 
+
     void Start()
     {
         mainCam = Camera.main.transform;
-        SetCameraState(0);
+        SetTurretState(0);
         detectionSlider.maxValue = settings.detectionTime;
         detectionSlider.value = 0;
     }
 
     void FixedUpdate()
     {
-        Debug.Log("Enfriamiento: " + alertCooldownTimer);
         detectionSlider.transform.rotation = mainCam.rotation;
 
-        float distancePlayer = Vector3.Distance(movingTransform.position, player.position);
+        float distancePlayer = Vector3.Distance(transform.position, player.position);
 
         if (alertLevel != 2)
         {
@@ -42,7 +41,7 @@ public class SecurityCamera : MonoBehaviour
                 if (detectionTimer <= 0)
                 {
                     alertCooldownTimer = 0;
-                    SetCameraState(0);
+                    SetTurretState(0);
                     detectionTimer = 0f;
                     detectionSlider.value = 0f;
                 }
@@ -50,10 +49,6 @@ public class SecurityCamera : MonoBehaviour
         }
         else if (alertLevel == 2)
         {
-            foreach (AIEnemyRobotHumanoid enemyRobot in enemyRobots)
-            {
-                enemyRobot.FollowPlayer();
-            }
             
         }
 
@@ -70,7 +65,7 @@ public class SecurityCamera : MonoBehaviour
     {
         Transform targetPoint = patrolPoints[currentPatrolPoint];
         Vector3 direction = (targetPoint.position - movingTransform.position).normalized;
-        movingTransform.position = Vector3.MoveTowards(movingTransform.position, targetPoint.position, settings.movementSpeed * Time.deltaTime);
+        movingTransform.position = Vector3.MoveTowards(movingTransform.position, targetPoint.position, settings.rotationSpeed * Time.deltaTime);
 
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         rotatingTransform.rotation = Quaternion.Slerp(rotatingTransform.rotation, lookRotation, settings.rotationSpeed * Time.deltaTime);
@@ -80,21 +75,9 @@ public class SecurityCamera : MonoBehaviour
             currentPatrolPoint = (currentPatrolPoint + 1) % patrolPoints.Length;
         }
     }
-
-    void FollowPlayer()
-    {
-        // La cámara sigue al jugador
-        movingTransform.position = player.position;
-        // Todos los enemigos siguen al jugador
-        foreach (AIEnemyRobotHumanoid enemyRobot in enemyRobots)
-        {
-            enemyRobot.FollowPlayer();
-        }
-    }
-
     void DetectPlayer()
     {
-        float distanceToPlayer = Vector3.Distance(movingTransform.position, player.position);
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
         if (distanceToPlayer <= settings.detectionRange)
         {
@@ -103,11 +86,11 @@ public class SecurityCamera : MonoBehaviour
             {
                 if (alertLevel == 0)
                 {
-                    SetCameraState(1);
+                    SetTurretState(1);
                 }
                 else if (alertLevel == 1)
                 {
-                    SetCameraState(2);
+                    SetTurretState(2);
                 }
             }
         }
@@ -123,7 +106,7 @@ public class SecurityCamera : MonoBehaviour
         UIColorChanger();
     }
 
-    void SetCameraState(int level)
+    void SetTurretState(int level)
     {
         alertLevel = level;
         alertCooldownTimer = settings.alertDuration;
@@ -137,7 +120,6 @@ public class SecurityCamera : MonoBehaviour
             case 1:
                 break;
             case 2:
-                
                 break;
         }
     }
@@ -147,4 +129,6 @@ public class SecurityCamera : MonoBehaviour
         Color detectionBarColor = settings.ColorG.Evaluate(detectionSlider.value / detectionSlider.maxValue);
         fillImage.color = detectionBarColor;
     }
+
+    
 }
