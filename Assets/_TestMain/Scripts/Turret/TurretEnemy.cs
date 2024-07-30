@@ -10,13 +10,13 @@ public class TurretEnemy : MonoBehaviour
     [SerializeField] private Image fillImage;
     [SerializeField] private Transform[] patrolPoints;
     [SerializeField] private Transform movingTransform, rotatingTransform;
+    [SerializeField] private TurretWeapon turretWeapon;
 
     private float detectionTimer = 0f;
     private int alertLevel = 0;
     private Transform mainCam;
     private float alertCooldownTimer = 0f;
     private int currentPatrolPoint = 0;
-
 
     void Start()
     {
@@ -30,11 +30,11 @@ public class TurretEnemy : MonoBehaviour
     {
         detectionSlider.transform.rotation = mainCam.rotation;
 
-        float distancePlayer = Vector3.Distance(transform.position, player.position);
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
         if (alertLevel != 2)
         {
-            if (distancePlayer >= settings.detectionRange && alertLevel > 0)
+            if (distanceToPlayer >= settings.detectionRange && alertLevel > 0)
             {
                 detectionTimer -= Time.deltaTime;
 
@@ -50,6 +50,7 @@ public class TurretEnemy : MonoBehaviour
         else if (alertLevel == 2)
         {
             
+            turretWeapon.AttackPlayer(player);
         }
 
         if (alertLevel == 0)
@@ -75,13 +76,16 @@ public class TurretEnemy : MonoBehaviour
             currentPatrolPoint = (currentPatrolPoint + 1) % patrolPoints.Length;
         }
     }
+
     void DetectPlayer()
     {
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        Debug.Log("Distance to player: " + distanceToPlayer);
 
         if (distanceToPlayer <= settings.detectionRange)
         {
             detectionTimer += Time.deltaTime;
+            Debug.Log("Detection Timer: " + detectionTimer);
             if (detectionTimer >= settings.detectionTime)
             {
                 if (alertLevel == 0)
@@ -126,9 +130,14 @@ public class TurretEnemy : MonoBehaviour
 
     void UIColorChanger()
     {
-        Color detectionBarColor = settings.ColorG.Evaluate(detectionSlider.value / detectionSlider.maxValue);
+        float normalizedValue = detectionSlider.value / detectionSlider.maxValue;
+
+        if (float.IsNaN(normalizedValue) || float.IsInfinity(normalizedValue) || normalizedValue < 0 || normalizedValue > 1)
+        {
+            normalizedValue = 0;
+        }
+
+        Color detectionBarColor = settings.ColorG.Evaluate(normalizedValue);
         fillImage.color = detectionBarColor;
     }
-
-    
 }

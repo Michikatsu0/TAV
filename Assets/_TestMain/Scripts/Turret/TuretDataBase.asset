@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52a9f88bc8c1a8b4da1cca74a85130ea, type: 3}
   m_Name: TuretDataBase
   m_EditorClassIdentifier: 
-  detectionRange: 0
-  detectionTime: 0
+  detectionRange: 5
+  detectionTime: 2
   ColorG:
     serializedVersion: 2
-    key0: {r: 1, g: 1, b: 1, a: 1}
-    key1: {r: 1, g: 1, b: 1, a: 1}
-    key2: {r: 0, g: 0, b: 0, a: 0}
+    key0: {r: 1, g: 0.8683747, b: 0, a: 1}
+    key1: {r: 1, g: 0, b: 0, a: 1}
+    key2: {r: 1, g: 1, b: 1, a: 0}
     key3: {r: 0, g: 0, b: 0, a: 0}
     key4: {r: 0, g: 0, b: 0, a: 0}
     key5: {r: 0, g: 0, b: 0, a: 0}
@@ -26,7 +26,7 @@ MonoBehaviour:
     key7: {r: 0, g: 0, b: 0, a: 0}
     ctime0: 0
     ctime1: 65535
-    ctime2: 0
+    ctime2: 65535
     ctime3: 0
     ctime4: 0
     ctime5: 0
@@ -43,8 +43,8 @@ MonoBehaviour:
     m_Mode: 0
     m_NumColorKeys: 2
     m_NumAlphaKeys: 2
-  alertDuration: 0
-  transitionDamageLerp: 0
+  alertDuration: 2
+  transitionDamageLerp: 2
   rotationSpeed: 1
-  attackCooldown: 0
-  attackDamage: 0
+  attackCooldown: 2
+  attackDamage: 2
