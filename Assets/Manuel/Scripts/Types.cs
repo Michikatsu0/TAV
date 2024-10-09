@@ -4,32 +4,36 @@ using UnityEngine;
 
 public abstract class Types : ScriptableObject
 {
-    public float maxHealth = 100f;  // Salud máxima
+public float maxHealth = 100f;  // Salud máxima
     protected float currentHealth;
 
-    public virtual void Initialize(GameObject obj)
-    {
-        currentHealth = maxHealth; // Inicializa la salud del personaje
-    }
+    // Nuevo: Referencia al modelo 3D o Prefab del personaje
+    public GameObject characterModelPrefab;  
+
+    // Guardar la referencia al objeto instanciado
+    protected GameObject instantiatedModel;
+    public Vector3 move;
+
+    // Método para inicializar el personaje
+    
 
     public abstract void ExecuteBehavior(GameObject obj); // Método abstracto para el comportamiento general
-
+public abstract void Inicialize(GameObject obj);
     // Método para recibir daño
     public virtual void TakeDamage(GameObject obj, float damage)
     {
         currentHealth -= damage;
-        Debug.Log(obj.name + " took " + damage + " damage. Current Health: " + currentHealth);
-
         if (currentHealth <= 0)
         {
             Die(obj); // Llamar a morir si la salud llega a 0
         }
     }
 
+    // Método para morir
     protected virtual void Die(GameObject obj)
     {
-        Debug.Log(obj.name + " has died.");
-        obj.SetActive(false); // Desactiva el objeto cuando muere
+     
+
+        obj.SetActive(false); // Desactiva el objeto controlador
     }
-}
 }

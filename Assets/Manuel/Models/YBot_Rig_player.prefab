@@ -3365,10 +3365,11 @@ GameObject:
   - component: {fileID: 2564159434942928724}
   - component: {fileID: 8286391052253318179}
   - component: {fileID: 8286391052253318178}
-  - component: {fileID: 8286391052253318189}
-  - component: {fileID: 8286391052253318190}
+  - component: {fileID: 1927909350700548956}
+  - component: {fileID: 1614379254336200492}
+  - component: {fileID: -4374842581420417481}
   m_Layer: 0
-  m_Name: YBot_Rig
+  m_Name: YBot_Rig_player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3382,7 +3383,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9096784248277358484}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.43, y: -0.373, z: 7.565341}
+  m_LocalPosition: {x: 13.675826, y: -0.373, z: -0.2309824}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3402,10 +3403,10 @@ Animator:
   m_GameObject: {fileID: 9096784248277358484}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 46ea755ec01325a4391057ce9f447326, type: 3}
-  m_Controller: {fileID: 9100000, guid: 58228cf31ada9794e916fa5b739eb775, type: 2}
+  m_Controller: {fileID: 9100000, guid: 102a449beaf909e4dbed193cacf7f44f, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
@@ -8191,7 +8192,7 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &8286391052253318189
+--- !u!114 &1927909350700548956
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8304,7 +8305,7 @@ MonoBehaviour:
   - {fileID: 8174022824910502774}
   - {fileID: 467911959851265764}
   - {fileID: 5780210447446699890}
---- !u!114 &8286391052253318190
+--- !u!114 &1614379254336200492
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8320,6 +8321,19 @@ MonoBehaviour:
   - m_Rig: {fileID: 8286391052358047214}
     m_Active: 1
   m_Effectors: []
+--- !u!65 &-4374842581420417481
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9096784248277358484}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5099767, y: 1.6179742, z: 0.27204582}
+  m_Center: {x: -0.0074210465, y: 0.81583196, z: 0.03962092}
 --- !u!1 &9112144758200655426
 GameObject:
   m_ObjectHideFlags: 0
