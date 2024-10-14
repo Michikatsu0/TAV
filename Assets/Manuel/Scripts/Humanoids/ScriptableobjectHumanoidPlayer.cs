@@ -5,16 +5,18 @@ using UnityEngine.UI;
 using Cinemachine;
 using Unity.VisualScripting;
 
+
 [CreateAssetMenu(fileName = "HumanoidPlayer", menuName = "ScriptableObjects/HumanoidPlayer", order = 1)]
 public class ScriptableobjectHumanoidPlayer : Types
 {
   public float moveSpeed = 10f;
+    float rotationSpeed = 10.0f;
   public float runSpeed=20f;
   private float currentspeed;
   private GameObject child;
     private Animator animator;
 
-
+private GameObject pivote;
  public GameObject sliderPrefab;
        private GameObject sliderInstance;
     // Referencia al canvas donde se colocará el slider
@@ -27,6 +29,7 @@ private SliderHealth sliderHealth;
 public Vector3 offset= new Vector3(0,2f,0);
     public override void Inicialize(GameObject obj)
     {
+        pivote=GameObject.Find("Pivote");
         currentHealth=maxhealth;
          child=obj.transform.GetChild(0).gameObject;
         animator=child.GetComponent<Animator>();
@@ -58,14 +61,28 @@ public Vector3 offset= new Vector3(0,2f,0);
     public override void ExecuteBehavior(GameObject obj, bool con)
 
     {
+        pivote.transform.position=new Vector3(obj.transform.position.x,obj.transform.position.y+1.2f,obj.transform.position.z);
         // Movimiento con teclas WASD
-       
-    sliderHealth.ChangeValue(currentHealth);
-     Vector3 screenPos = Camera.main.WorldToScreenPoint(obj.transform.position+offset);
+      Vector3 worldPosition = obj.transform.position + offset;
+sliderHealth.ChangeValue(currentHealth);
+// Asegúrate de que el Slider exista
+if (sliderInstance != null)
+{
+    // Establecer la posición del Slider en World Space
+    sliderInstance.transform.position = worldPosition;
 
-        // Actualizar la posición del slider en función de la posición del objeto
-       
-              sliderInstance.transform.position = screenPos;
+    // Ajustar el tamaño (escala) del Slider
+      Vector3 directionToPlayer = (Camera.main.transform.position - obj.transform.position).normalized;
+          
+    sliderInstance.GetComponent<RectTransform>().localScale = new Vector3(0.02f, 0.01f, 0.03f);  // Ajusta estos valores para controlar el tamaño
+
+    // Si necesitas controlar la visibilidad, puedes usar la distancia del objeto con la cámara
+    Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
+                 sliderInstance.transform.rotation = Quaternion.Slerp( sliderInstance.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+
+
+    // Cambiar la visibilidad del slider según la distancia o según otras condiciones
+}
            
         
         

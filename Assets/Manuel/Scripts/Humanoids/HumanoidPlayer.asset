@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: HumanoidPlayer
   m_EditorClassIdentifier: 
   maxhealth: 100
-  currentHealth: 90
+  currentHealth: 100
   characterModelPrefab: {fileID: 9096784248277358484, guid: 192177525a6346f43a63866da1fdde42, type: 3}
   move: {x: 0, y: 0, z: 0}
   endAttack: 1

@@ -33,5 +33,5 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 0
-  offset: {x: 0, y: 2, z: 0}
+  offset: {x: 0, y: 2.5, z: 0}
   sliderPrefab: {fileID: 3143280553655836677, guid: 41272ab05e9606f4ca0b07021dec2d4c, type: 3}

@@ -15,13 +15,13 @@ public class ScriptableObjectHumanoidEnemy : Types
     public float moveSpeed = 4f;
     public float attackspeed=7f;
     public float chaseDistance = 10f;
-    public float attackRange = 10f;
+    public float attackRange = 5f;
     public float attackCooldown = 1f;
     private float nextAttackTime = 0f;
     public float endAttackTime;
     private float endcurrentAttackTime;
     private Transform startposition;
-    float rotationSpeed = 5.0f;
+    float rotationSpeed = 10.0f;
     private NavMeshAgent agent;
 
     public LayerMask playerLayer;  
@@ -33,7 +33,7 @@ public class ScriptableObjectHumanoidEnemy : Types
     private Transform objtransform;
     private bool conchange;
 private SliderColor sliderColor;
-public Vector3 offset= new Vector3(0,5f,0);
+public Vector3 offset= new Vector3(0,2.5f,0);
     // Referencia al prefab del slider
     public GameObject sliderPrefab;
        private GameObject sliderInstance;
@@ -104,27 +104,37 @@ void OnEnable()
 
     {
        
-       Vector3 screenPos = Camera.main.WorldToScreenPoint(obj.transform.position+offset);
+       Vector3 worldPosition = obj.transform.position + offset;
 
-        // Actualizar la posición del slider en función de la posición del objeto
-        if(sliderInstance!=null)
-        {  sliderInstance.transform.position = screenPos;
+// Asegúrate de que el Slider exista
+if (sliderInstance != null)
+{
+    // Establecer la posición del Slider en World Space
+    sliderInstance.transform.position = worldPosition;
 
-        // Cambiar visibilidad a través de la transparencia (alpha)
-        if (screenPos.z > 0)
-        {
-            sliderCanvasGroup.alpha = 1f;  // Totalmente visible
-        }
-        else
-        {
-            sliderCanvasGroup.alpha = 0f;  // Totalmente invisible
-        }
-    
-        
-        }
+    // Ajustar el tamaño (escala) del Slider
+    sliderInstance.GetComponent<RectTransform>().localScale = new Vector3(0.02f, 0.01f, 0.03f);  // Ajusta estos valores para controlar el tamaño
+
+    // Si necesitas controlar la visibilidad, puedes usar la distancia del objeto con la cámara
+    float distanceToCamera = Vector3.Distance(Camera.main.transform.position, worldPosition);
+
+    // Cambiar la visibilidad del slider según la distancia o según otras condiciones
+    if (distanceToCamera > 0)  // O cualquier otra condición que necesites
+    {
+        sliderCanvasGroup.alpha = 1f;  // Totalmente visible
+    }
+    else
+    {
+        sliderCanvasGroup.alpha = 0f;  // Totalmente invisible
+    }
+}
        
-        sliderInstance.GetComponent<RectTransform>().transform.localScale= new Vector3(0.5f,0.5f,0.5f);
-        
+       
+        Vector3 directionToPlayer = (player.transform.position - obj.transform.position).normalized;
+          
+                // Crear la rotación basada en la dirección (solo rotar en el eje Y)
+                Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
+                 sliderInstance.transform.rotation = Quaternion.Slerp( sliderInstance.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
 
         if(con==false)
         {
@@ -144,11 +154,7 @@ void OnEnable()
                         
 Debug.Log("!");
                 // Calcular la dirección hacia el jugador
-                Vector3 directionToPlayer = (player.transform.position - obj.transform.position).normalized;
-          
-                // Crear la rotación basada en la dirección (solo rotar en el eje Y)
-                Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
-
+               
                 // Aplicar la rotación suavemente (opcional)
                 obj.transform.rotation = Quaternion.Slerp(obj.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
 
@@ -202,16 +208,12 @@ rb.angularVelocity = Vector3.zero;
  
          Debug.Log("5");
                  animator.SetBool("Run", true);
-                  Vector3 directionToPlayer = (player.transform.position - obj.transform.position).normalized;
-          
-                // Crear la rotación basada en la dirección (solo rotar en el eje Y)
-                Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
-
+                 
                 // Aplicar la rotación suavemente (opcional)
                 obj.transform.rotation = Quaternion.Slerp(obj.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
 
                  Vector3 direction = (player.transform.position - obj.transform.position).normalized;
-                obj.transform.Translate(direction * moveSpeed *2 * Time.deltaTime);
+                obj.transform.Translate(direction * attackspeed * Time.deltaTime);
                             }
             
             }
