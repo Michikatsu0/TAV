@@ -12,8 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4b9a5829774e0d4ba0db8518fa663f2, type: 3}
   m_Name: HumanoidPlayer
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxhealth: 100
+  currentHealth: 90
   characterModelPrefab: {fileID: 9096784248277358484, guid: 192177525a6346f43a63866da1fdde42, type: 3}
   move: {x: 0, y: 0, z: 0}
+  endAttack: 1
   moveSpeed: 10
   runSpeed: 20
+  sliderPrefab: {fileID: 4591222320329332026, guid: b64cb2ccedc57754ba8c5722c128d2e1, type: 3}
+  offset: {x: 0, y: 2, z: 0}

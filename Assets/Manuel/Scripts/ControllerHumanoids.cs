@@ -9,24 +9,34 @@ public class ControllerHumanoids : MonoBehaviour
     // Referencia al ScriptableObject que define el comportamiento
   private NavMeshAgent navAgent;
 private Animator animator;
+private GameObject child;
+ public float damageAmount = 100;
     private float wanderDistance = 3;
 private  GameObject visuals;
     public Types characterBehavior;
 
+    [HideInInspector]public bool end=true;
+private bool change=false;
    private void Start()
     {
-        if (navAgent == null)
-            navAgent = this.GetComponent<NavMeshAgent>();
+
+
+      
 
         if (characterBehavior != null)
+        {
             LoadEnemy(characterBehavior);
+        }
             
-
-        if (characterBehavior != null)
+ if (characterBehavior != null)
         {
             // Inicializa el comportamiento del personaje
             characterBehavior.Inicialize(gameObject);
         }
+       
+        child=gameObject.transform.GetChild(0).gameObject;
+        animator=child.GetComponent<Animator>();
+        
     }
 
     private void LoadEnemy(Types _characterBehavior)
@@ -45,7 +55,7 @@ private  GameObject visuals;
         visuals.transform.SetParent(this.transform);
         visuals.transform.localPosition = Vector3.zero;
         visuals.transform.rotation = Quaternion.identity;
-        
+    
    
     }
 
@@ -61,47 +71,49 @@ private  GameObject visuals;
     private void Update()
     {
         
-animator=visuals.GetComponent<Animator>();
+
         if (characterBehavior != null)
         {
             // Ejecuta el comportamiento del personaje en cada frame
-            characterBehavior.ExecuteBehavior(gameObject);
+            characterBehavior.ExecuteBehavior(gameObject, end);
+         
         }
-   
-        if (characterBehavior.move.magnitude > 0 && characterBehavior.move.magnitude<=5f)
-        {
-
-            // Activar el trigger de movimiento en el Animator
-            if (animator != null)
-            {
-                animator.SetBool("Walk",true);
-                animator.SetBool("Run",false);
-            }
-        }
-        else if(characterBehavior.move.magnitude==0)
-        {
-            // Desactivar el trigger si no se está moviendo (opcional)
-            if (animator != null)
-            {
-                animator.SetBool("Walk",false);
-                animator.SetBool("RunStop", true);
-        }
-
-        // Aquí no hay ataque, solo movimiento
-    }
-    else if(characterBehavior.move.magnitude>5f)
+  
+       
+}
+private void OnTriggerEnter(Collider col)
+{
+    if(change==false)
     {
-          animator.SetBool("Run",true);
-          animator.SetBool("RunStop",false);
-    }
-    }
-
-    // Método para recibir daño
-    public void TakeDamage(float damage)
+    if(gameObject.CompareTag("Player"))
     {
-        if (characterBehavior != null)
+    if(col.gameObject.CompareTag("HumanoidEnemy"))
+    {
+        characterBehavior.currentHealth-=10f;
+    characterBehavior.TakeDamage(gameObject);
+    Debug.Log(characterBehavior.currentHealth);
+    animator.SetBool("run",false);
+    animator.SetBool("walk",false);
+    animator.SetTrigger("Punch");
+  
+   Rigidbody rb = gameObject.GetComponent<Rigidbody>();
+        
+        if (rb != null)
         {
-            characterBehavior.TakeDamage(gameObject, damage);
+            // Calcula la dirección del empuje, que es desde este objeto hacia el objeto tocado
+            Vector3 pushDirection = transform.position-col.transform.position  ;
+            pushDirection = pushDirection.normalized; // Normaliza para obtener solo la dirección
+
+            // Aplica una fuerza en esa dirección con la magnitud especificada
+            rb.AddForce(pushDirection * 7f, ForceMode.Impulse);
         }
     }
+    }
+    change=true;
+}
+}
+public void OnTriggerExit(Collider col)
+{
+    change=false;
+}
 }

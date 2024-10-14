@@ -12,14 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99c1c76f026def14e929e5b289c84090, type: 3}
   m_Name: HumanoidEnemy
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxhealth: 100
+  currentHealth: 100
   characterModelPrefab: {fileID: 9096784248277358484, guid: 4f210389e2d9b8f4386061c1ede7cb14, type: 3}
-  moveSpeed: 3
+  move: {x: 0, y: 0, z: 0}
+  endAttack: 1
+  patrolPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  triggerColorchange: 1
+  triggerColorchangeStop: 0
+  moveSpeed: 4
+  attackspeed: 7
   chaseDistance: 10
-  attackRange: 2
-  damageAmount: 10
+  attackRange: 10
   attackCooldown: 1
+  endAttackTime: 0
   playerLayer:
     serializedVersion: 2
     m_Bits: 0
-  animator: {fileID: 2564159434942928724, guid: 4f210389e2d9b8f4386061c1ede7cb14, type: 3}
+  offset: {x: 0, y: 2, z: 0}
+  sliderPrefab: {fileID: 3143280553655836677, guid: 41272ab05e9606f4ca0b07021dec2d4c, type: 3}

@@ -8,6 +8,7 @@ TagManager:
   - Enemy
   - Probs
   - Bridges
+  - HumanoidEnemy
   layers:
   - Default
   - TransparentFX
