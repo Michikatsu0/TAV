@@ -24,8 +24,8 @@ MonoBehaviour:
   - {fileID: 0}
   triggerColorchange: 1
   triggerColorchangeStop: 0
-  moveSpeed: 4
-  attackspeed: 7
+  moveSpeed: 2
+  attackspeed: 3
   chaseDistance: 10
   attackRange: 10
   attackCooldown: 1

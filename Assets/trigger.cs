@@ -32,6 +32,7 @@ public bool cambio=false;
         {
            find.GetComponent<ControllerHumanoids>().end=true;
         } 
+        cambio=false;
     }
     }
 }

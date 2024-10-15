@@ -8,6 +8,8 @@ using System.Linq;
 [CreateAssetMenu(fileName = "HumanoidEnemy", menuName = "ScriptableObjects/HumanoidEnemy", order = 2)]
 public class ScriptableObjectHumanoidEnemy : Types
 {
+    private bool chasing;
+    private bool chase;
  public Transform[] patrolPoints = new  Transform[4]; // Array de puntos de patrullaje
   [HideInInspector] public bool triggerColorchange = true; 
     private int currentPointIndex = 0;
@@ -15,13 +17,13 @@ public class ScriptableObjectHumanoidEnemy : Types
     public float moveSpeed = 4f;
     public float attackspeed=7f;
     public float chaseDistance = 10f;
-    public float attackRange = 5f;
+    public float attackRange = 10f;
     public float attackCooldown = 1f;
     private float nextAttackTime = 0f;
     public float endAttackTime;
     private float endcurrentAttackTime;
     private Transform startposition;
-    float rotationSpeed = 10.0f;
+    float rotationSpeed = 5.0f;
     private NavMeshAgent agent;
 
     public LayerMask playerLayer;  
@@ -42,6 +44,11 @@ public Vector3 offset= new Vector3(0,2.5f,0);
     private trigger trigger;
 private Slider sliderComponent;
 private CanvasGroup sliderCanvasGroup;
+private float temp;
+private bool changeStartcourtine=true;
+private bool changestarStoptcourtine=true;
+private bool changeStoptcourtine=true;
+private bool changeStartcontcourtine=true;
 
     public override void Inicialize(GameObject obj)
     {
@@ -99,12 +106,19 @@ void OnEnable()
     // Reinicializar las variables cuando el objeto es activado
     triggerColorchange = true;
     triggerColorchangeStop = false;
+    chasing=false;
+    chase=true;
+  changeStartcourtine=true;
+ changestarStoptcourtine=true;
+changeStoptcourtine=true;
+changeStartcontcourtine=true;
+    
 }
     public override void ExecuteBehavior(GameObject obj, bool con)
 
     {
        
-       Vector3 worldPosition = obj.transform.position + offset;
+      Vector3 worldPosition = obj.transform.position + offset;
 
 // Asegúrate de que el Slider exista
 if (sliderInstance != null)
@@ -113,7 +127,7 @@ if (sliderInstance != null)
     sliderInstance.transform.position = worldPosition;
 
     // Ajustar el tamaño (escala) del Slider
-    sliderInstance.GetComponent<RectTransform>().localScale = new Vector3(0.02f, 0.01f, 0.03f);  // Ajusta estos valores para controlar el tamaño
+    sliderInstance.GetComponent<RectTransform>().localScale = new Vector3(0.02f, 0.01f, 0.1f);  // Ajusta estos valores para controlar el tamaño
 
     // Si necesitas controlar la visibilidad, puedes usar la distancia del objeto con la cámara
     float distanceToCamera = Vector3.Distance(Camera.main.transform.position, worldPosition);
@@ -128,13 +142,23 @@ if (sliderInstance != null)
         sliderCanvasGroup.alpha = 0f;  // Totalmente invisible
     }
 }
-       
-       
-        Vector3 directionToPlayer = (player.transform.position - obj.transform.position).normalized;
+if (sliderInstance != null)
+{
+    // Establecer la posición del Slider en World Space
+  
+    // Ajustar el tamaño (escala) del Slider
+      Vector3 directionToPlayer = (player.transform.position - obj.transform.position).normalized;
           
-                // Crear la rotación basada en la dirección (solo rotar en el eje Y)
-                Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
+  // Ajusta estos valores para controlar el tamaño
+
+    // Si necesitas controlar la visibilidad, puedes usar la distancia del objeto con la cámara
+    Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
                  sliderInstance.transform.rotation = Quaternion.Slerp( sliderInstance.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+
+
+    // Cambiar la visibilidad del slider según la distancia o según otras condiciones
+}
+        
 
         if(con==false)
         {
@@ -154,7 +178,11 @@ if (sliderInstance != null)
                         
 Debug.Log("!");
                 // Calcular la dirección hacia el jugador
-               
+                Vector3 directionToPlayer = (player.transform.position - obj.transform.position).normalized;
+          
+                // Crear la rotación basada en la dirección (solo rotar en el eje Y)
+                Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
+
                 // Aplicar la rotación suavemente (opcional)
                 obj.transform.rotation = Quaternion.Slerp(obj.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
 
@@ -166,49 +194,81 @@ Debug.Log("!");
                         else{
                            if(sliderColor.triggerColorChangeStop==true)
                            {
-                             Debug.Log("2");
- rb.velocity = Vector3.zero; // Detiene el movimiento
-rb.angularVelocity = Vector3.zero;
- animator.SetBool("Chase", false);
-                 animator.SetBool("Run", false);
-                  rb.velocity = Vector3.zero; // Detiene el movimiento
-rb.angularVelocity = Vector3.zero;
-                 
-                
+                            changeStartcourtine=true;
+                            changeStoptcourtine=true;
+                            changeStartcontcourtine=true;
+                            Debug.Log("2");
+                             sliderColor.triggerColorChange=true;
+             animator.SetBool("Run", true);
+                  Vector3 directionToPlayer = (player.transform.position - obj.transform.position).normalized;
+          
+                // Crear la rotación basada en la dirección (solo rotar en el eje Y)
+                Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
+
+                // Aplicar la rotación suavemente (opcional)
+                obj.transform.rotation = Quaternion.Slerp(obj.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+
+                   obj.transform.Translate(directionToPlayer * attackspeed * Time.deltaTime);
+                           if(changestarStoptcourtine)
+                           {
                             sliderColor.getChangeColorStopStart();
+                            changestarStoptcourtine=false;
+                           }
                            }
                            else
                            {
                       Debug.Log("3");
                            
-                             
+                             chasing=false;
                               trigger.cambio=true;
+                          
                             triggerColorchangeStop=false;
-                            sliderColor.triggerColorChange=true;
+                           
                            }
                             
                         }
             }
               else
             {
+                if(sliderColor.end==true)
+                {
+                     if(changeStoptcourtine)
+                    {
+sliderColor.getChangeColorbackStop();
+changeStoptcourtine=false;
+                    }
+                    chasing=true;
+                }
+                if(chasing==false)
+                {
                 
-
                 triggerColorchangeStop=true;
                 if(sliderColor.triggerColorChange==true)
                             {
+                              changestarStoptcourtine=true;
+             
                            Debug.Log("4");     
              animator.SetBool("Chase", false);
                  animator.SetBool("Run", false);
                  agent.isStopped=true;
-                 rb.velocity = Vector3.zero; // Detiene el movimiento
-rb.angularVelocity = Vector3.zero;
+             
+if(changeStartcourtine)
+{
                  sliderColor.getChangeColorStar();
+                 changeStartcourtine=false;
+}
+
+
                             }
                             else{
- 
+
          Debug.Log("5");
                  animator.SetBool("Run", true);
-                 
+                  Vector3 directionToPlayer = (player.transform.position - obj.transform.position).normalized;
+          
+                // Crear la rotación basada en la dirección (solo rotar en el eje Y)
+                Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
+
                 // Aplicar la rotación suavemente (opcional)
                 obj.transform.rotation = Quaternion.Slerp(obj.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
 
@@ -217,16 +277,57 @@ rb.angularVelocity = Vector3.zero;
                             }
             
             }
-            
+            else{
+                  triggerColorchangeStop=true;
+                if(sliderColor.triggerColorChange==true)
+                {
+                    changestarStoptcourtine=true;
+                
+                           Debug.Log("6"); 
+                         
+               Vector3 directionToPlayer = (player.transform.position - obj.transform.position).normalized;
+          
+                // Crear la rotación basada en la dirección (solo rotar en el eje Y)
+                Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
+
+                // Aplicar la rotación suavemente (opcional)
+                obj.transform.rotation = Quaternion.Slerp(obj.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+
+                 Vector3 direction = (player.transform.position - obj.transform.position).normalized;
+                obj.transform.Translate(direction * attackspeed *2 * Time.deltaTime);
+                 animator.SetBool("Run", true);
+                 agent.isStopped=true;
+               if(changeStartcontcourtine)
+               {
+ sliderColor.getChangeColorStarcon();
+ changeStartcontcourtine=false;
+               }
+            }
+            else{
+ Debug.Log("7");  
+                 animator.SetBool("Run", true);
+                  Vector3 directionToPlayer = (player.transform.position - obj.transform.position).normalized;
+          
+                // Crear la rotación basada en la dirección (solo rotar en el eje Y)
+                Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
+
+                // Aplicar la rotación suavemente (opcional)
+                obj.transform.rotation = Quaternion.Slerp(obj.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+
+                 Vector3 direction = (player.transform.position - obj.transform.position).normalized;
+                obj.transform.Translate(direction * attackspeed *2 * Time.deltaTime);
+            }
+            }
+            }
           
         
     }
     else{
-          Debug.Log("6");
+          Debug.Log("8");
 Patrol();
 
     }
-    }
+    } 
     
 
   private void Patrol()
