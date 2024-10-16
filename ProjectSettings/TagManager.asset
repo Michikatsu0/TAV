@@ -9,6 +9,9 @@ TagManager:
   - Probs
   - Bridges
   - HumanoidEnemy
+  - Pivote
+  - bullet
+  - turret
   layers:
   - Default
   - TransparentFX

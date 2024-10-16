@@ -16,21 +16,17 @@ public bool cambio=false;
     void Update()
     {
           GameObject[] finds = GameObject.FindGameObjectsWithTag("HumanoidEnemy");
-        if (Input.GetKeyDown(KeyCode.O))
-    {
-        // Encuentra todos los objetos con el tag "HumanoidEnemy"
       
-        
-        foreach (GameObject find in finds)
-        {
-           find.GetComponent<ControllerHumanoids>().end=false;
-        }
-    }
     if(cambio==true)
     {
         foreach (GameObject find in finds)
         {
-           find.GetComponent<ControllerHumanoids>().end=true;
+            if(find.GetComponent<ControllerHumanoids>().changetrigger==true)
+            {
+         find.GetComponent<ControllerHumanoids>().end=true;
+         find.GetComponent<ControllerHumanoids>().changetrigger=false;
+            }
+           
         } 
         cambio=false;
     }

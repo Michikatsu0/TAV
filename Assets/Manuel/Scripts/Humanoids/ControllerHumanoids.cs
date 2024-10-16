@@ -6,17 +6,23 @@ using Cinemachine;
 
 public class ControllerHumanoids : MonoBehaviour
 {
-    // Referencia al ScriptableObject que define el comportamiento
+   
   private NavMeshAgent navAgent;
 private Animator animator;
 private GameObject child;
- public float damageAmount = 100;
+ public float damageAmountEnemy = 10;
+ public float damageAmountturret = 10;
+ public bool changetrigger=false;
     private float wanderDistance = 3;
 private  GameObject visuals;
     public Types characterBehavior;
+public bool trigercon=false;
 
     [HideInInspector]public bool end=true;
 private bool change=false;
+
+public bool triggerd1;
+
    private void Start()
     {
 
@@ -34,14 +40,14 @@ private bool change=false;
             characterBehavior.Inicialize(gameObject);
         }
        
-        child=gameObject.transform.GetChild(0).gameObject;
+        child=gameObject.transform.GetChild(1).gameObject;
         animator=child.GetComponent<Animator>();
         
     }
 
     private void LoadEnemy(Types _characterBehavior)
     {
-        //remove children objects i.e. visuals
+        
         foreach (Transform child in this.transform)
         {
             if (Application.isEditor)
@@ -70,11 +76,11 @@ private bool change=false;
 
     private void Update()
     {
-        
-
+       
+     
         if (characterBehavior != null)
         {
-            // Ejecuta el comportamiento del personaje en cada frame
+          
             characterBehavior.ExecuteBehavior(gameObject, end);
          
         }
@@ -89,9 +95,9 @@ private void OnTriggerEnter(Collider col)
     {
     if(col.gameObject.CompareTag("HumanoidEnemy"))
     {
-        characterBehavior.currentHealth-=10f;
+        characterBehavior.currentHealth-=damageAmountEnemy;
     characterBehavior.TakeDamage(gameObject);
-    Debug.Log(characterBehavior.currentHealth);
+  
     animator.SetBool("run",false);
     animator.SetBool("walk",false);
     animator.SetTrigger("Punch");
@@ -100,13 +106,23 @@ private void OnTriggerEnter(Collider col)
         
         if (rb != null)
         {
-            // Calcula la dirección del empuje, que es desde este objeto hacia el objeto tocado
+           
             Vector3 pushDirection = transform.position-col.transform.position  ;
-            pushDirection = pushDirection.normalized; // Normaliza para obtener solo la dirección
+            pushDirection = pushDirection.normalized; 
 
-            // Aplica una fuerza en esa dirección con la magnitud especificada
+           
             rb.AddForce(pushDirection * 7f, ForceMode.Impulse);
         }
+    }
+    if(col.gameObject.CompareTag("bullet"))
+    {
+        Destroy(col.gameObject);
+ characterBehavior.currentHealth-=damageAmountEnemy;
+    characterBehavior.TakeDamage(gameObject);
+  
+    animator.SetBool("run",false);
+    animator.SetBool("walk",false);
+    animator.SetTrigger("Punch");
     }
     }
     change=true;

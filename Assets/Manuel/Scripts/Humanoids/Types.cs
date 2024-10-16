@@ -9,21 +9,21 @@ public abstract class Types : ScriptableObject
 public float maxhealth=100f;
 
 [HideInInspector]public float currentHealth;
+[HideInInspector]public bool triggerend=false;
 
-    // Nuevo: Referencia al modelo 3D o Prefab del personaje
     public GameObject characterModelPrefab;  
 
 
-    // Guardar la referencia al objeto instanciado
+ 
     protected GameObject instantiatedModel;
    [HideInInspector]  public Vector3 move;
 
-    // Método para inicializar el personaje
+   
      
  [HideInInspector] public bool endAttack=true;
     public abstract void ExecuteBehavior(GameObject obj, bool con); 
 public abstract void Inicialize(GameObject obj);
-    // Método para recibir daño
+
     public virtual void TakeDamage( GameObject obj)
     {  
        
@@ -36,6 +36,6 @@ public abstract void Inicialize(GameObject obj);
         }
     }
 
-    // Método para morir
+ 
   
 }

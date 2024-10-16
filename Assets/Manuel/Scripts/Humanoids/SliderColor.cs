@@ -5,37 +5,41 @@ using System.Linq;
 
 public class SliderColor: MonoBehaviour
 {
-    public Slider slider; // Referencia al Slider // Objeto al que el Slider mira
+    public Slider slider; 
      [HideInInspector] public bool triggerColorChange = true; 
       [HideInInspector] public bool triggerColorChangeStop = true; 
-      [HideInInspector] public bool changeStop = true; // Condición pública para activar el cambio de color
-  [HideInInspector] public Color startColor = Color.green; // Color inicial
-  [HideInInspector] public Color endColor = Color.red; // Color final
-    public float duration = 10f; // Duración del cambio de color
+      [HideInInspector] public bool changeStop = true; 
+  [HideInInspector] public Color startColor = Color.green; 
+  [HideInInspector] public Color endColor = Color.red; 
+    public float duration = 10f; 
     [HideInInspector] public Transform objectposition;
    [HideInInspector] private Transform playerTransform;
 [HideInInspector] public Image fillImage;
 private float elapsedTime = 0f;
 public bool change=true;
 public bool end;
+public bool end2;
 private float tempTime;
+
+public bool changeTimer=true;
+public bool changeTimer2=true;
     void Start()
     {
        triggerColorChange = true; 
        triggerColorChangeStop = true; 
-        // Asegúrate de que el slider tenga el color inicial
+       
         if (slider != null)
         { fillImage= slider.fillRect.GetComponent<Image>();
             fillImage.GetComponent<Image>().color = startColor;
            
         }
         slider.maxValue=duration;
-        slider.value= slider.maxValue;
+        slider.value= 0;
     }
 
 void OnEnable()
 {
-    // Reinicializar las variables cuando el objeto es activado
+
     triggerColorChange = true;
     triggerColorChangeStop = true;
     changeStop = false;
@@ -44,7 +48,7 @@ void OnEnable()
 }
     void Update()
     {
-        // Si hay un objeto asignado para la posición, mover el Slider a esa posición
+      
         if(ChangeColor()!=null)
         {
  if(Input.GetKeyDown(KeyCode.Y))
@@ -55,7 +59,7 @@ void OnEnable()
         }
 
 
-        // Comienza el cambio de color si la condición se cumple
+      
     
     }
 
@@ -67,20 +71,42 @@ void OnEnable()
      Debug.LogFormat("Funciona1");
         
 end=true;
-        // Cambia el color de verde a rojo
+      
         while (elapsedTime <  duration)
         {
          
             tempTime=elapsedTime;
             slider.value=elapsedTime;
-             fillImage.color = Color.Lerp( endColor,startColor, elapsedTime/duration );
+             fillImage.color = Color.Lerp( startColor,endColor, elapsedTime/duration );
              
             elapsedTime += Time.deltaTime;
-            yield return null; // Espera el siguiente frame
+            yield return null; 
         }
         
          end=false;
-        triggerColorChangeStop=false;
+        triggerColorChange=false;
+           
+           
+}
+public IEnumerator ChangeColorBackcon()
+    {
+      
+    
+
+     
+        while (tempTime <  duration)
+        {
+         
+            
+            slider.value=tempTime;
+             fillImage.color = Color.Lerp(startColor ,endColor, tempTime/duration );
+             
+            tempTime += Time.deltaTime;
+            yield return null; 
+        }
+        
+        
+        triggerColorChange=false;
            
            
 }
@@ -89,26 +115,28 @@ end=true;
     
     private IEnumerator ChangeColor()
     {
+        end2=true;
         Debug.LogFormat("Funciona2");
         
         float elapsedTime = duration;
       float changetimer=0;
         
 
-        // Cambia el color de verde a rojo
+     
         while (elapsedTime >  0)
         {
             tempTime=elapsedTime;
             slider.value=elapsedTime;
             
-             fillImage.color = Color.Lerp( startColor, endColor, changetimer/duration);
+             fillImage.color = Color.Lerp( endColor, startColor, changetimer/duration);
            
             elapsedTime -= Time.deltaTime;
             changetimer+=Time.deltaTime;
-            yield return null; // Espera el siguiente frame
+            yield return null; 
         }
+        end2=false;
         changeStop=true;
-        triggerColorChange=false;
+        triggerColorChangeStop=false;
         
     }
      private IEnumerator ChangeColorcon()
@@ -116,25 +144,40 @@ end=true;
         Debug.LogFormat("Funciona3");
         
        
-      float changetimer=tempTime;
+      float changetimer=duration-tempTime;
         
 
-        // Cambia el color de verde a rojo
+     
         while (tempTime >  0)
         {
             
             slider.value=tempTime;
             
-             fillImage.color = Color.Lerp( startColor, endColor, changetimer/duration);
+             fillImage.color = Color.Lerp( endColor, startColor, changetimer/duration);
            
             tempTime -= Time.deltaTime;
             changetimer+=Time.deltaTime;
-            yield return null; // Espera el siguiente frame
+            
+            yield return null; 
         }
        
-        triggerColorChange=false;
+        triggerColorChangeStop=false;
         
     }
+
+    public IEnumerator ExitTime(float time)
+    {
+        yield return new WaitForSeconds(time);
+        Debug.Log("Aqui");
+       changeTimer=false;
+    }
+    public IEnumerator ExitTime2(float time)
+    {
+        yield return new WaitForSeconds(time);
+       changeTimer2=false;
+    }
+
+    
        public void getChangeColorStar()
        {
         StartCoroutine(ChangeColor());
@@ -147,15 +190,28 @@ end=true;
        {
         StartCoroutine(ChangeColorcon());
        }
+       public void getChangeColorbackcon()
+       {
+        StartCoroutine(ChangeColorBackcon());
+       }
         public void getChangeColorbackStop()
        {
-       StopAllCoroutines();// Interrumpir la coroutine
+       StopAllCoroutines();
              
        }
-       public void getChange()
+         public void getChangeColorStop()
        {
-      
+       StopAllCoroutines();
+             
        }
+    public void getExitTime(float con)
+    {
+     StartCoroutine(ExitTime(con));
+    }
+     public void getExitTime2(float con)
+    {
+     StartCoroutine(ExitTime2(con));
+    }
  
  
 }

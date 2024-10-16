@@ -3,29 +3,29 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UI;  // Cambié a UnityEngine.UI ya que el sistema de UI clásico de Unity usa esto
+using UnityEngine.UI;  
 using System.Linq;
 [CreateAssetMenu(fileName = "HumanoidEnemy", menuName = "ScriptableObjects/HumanoidEnemy", order = 2)]
 public class ScriptableObjectHumanoidEnemy : Types
 {
     private bool chasing;
     private bool chase;
- public Transform[] patrolPoints = new  Transform[4]; // Array de puntos de patrullaje
+ public Transform[] patrolPoints = new  Transform[4];
   [HideInInspector] public bool triggerColorchange = true; 
     private int currentPointIndex = 0;
     [HideInInspector] public bool triggerColorchangeStop = false;
     public float moveSpeed = 4f;
-    public float attackspeed=7f;
-    public float chaseDistance = 10f;
+    public float attackspeed=5f;
+    public float chaseDistance = 5f;
     public float attackRange = 10f;
     public float attackCooldown = 1f;
     private float nextAttackTime = 0f;
     public float endAttackTime;
     private float endcurrentAttackTime;
     private Transform startposition;
-    float rotationSpeed = 5.0f;
+    float rotationSpeed = 10.0f;
     private NavMeshAgent agent;
-
+private bool stop=false;
     public LayerMask playerLayer;  
     private GameObject child;
     private Animator animator;
@@ -36,19 +36,23 @@ public class ScriptableObjectHumanoidEnemy : Types
     private bool conchange;
 private SliderColor sliderColor;
 public Vector3 offset= new Vector3(0,2.5f,0);
-    // Referencia al prefab del slider
+   
     public GameObject sliderPrefab;
        private GameObject sliderInstance;
-    // Referencia al canvas donde se colocará el slider
+  
     private GameObject canvas;
-    private trigger trigger;
+    
 private Slider sliderComponent;
 private CanvasGroup sliderCanvasGroup;
 private float temp;
 private bool changeStartcourtine=true;
 private bool changestarStoptcourtine=true;
 private bool changeStoptcourtine=true;
+private bool changeStoptcourtinestart=true;
 private bool changeStartcontcourtine=true;
+private bool changeStocontcourtine=true;
+private bool changebackconcourtine=true;
+private GameObject trigger2;
 
     public override void Inicialize(GameObject obj)
     {
@@ -58,27 +62,27 @@ private bool changeStartcontcourtine=true;
         patrolPoints[2] = GameObject.Find("Waypoint3").transform;
         patrolPoints[3] = GameObject.Find("Waypoint4").transform;
         currentHealth = maxhealth;
-        child = obj.transform.GetChild(0).gameObject;
+        child = obj.transform.GetChild(1).gameObject;
         objtransform = obj.transform;
         endcurrentAttackTime = endAttackTime;
         startposition = obj.transform;
         player = GameObject.FindGameObjectWithTag("Player");
         agent=obj.GetComponent<NavMeshAgent>();
         animator = child.GetComponent<Animator>();
-     trigger=GameObject.Find("Cube").GetComponent<trigger>();
-        // Buscar el Canvas en la escena
-        canvas = GameObject.Find("Canvas");  // Asegúrate que tu Canvas esté nombrado correctamente
+  trigger2=GameObject.Find("Trigger(no borrar)");
+ 
+        canvas = GameObject.Find("Canvas");  
 
-        // Crear el slider a partir del prefab
+    
         if (sliderPrefab != null && canvas != null)
         {
-            // Instanciar el slider como hijo del Canvas
+        
              sliderInstance = Instantiate(sliderPrefab, canvas.transform);
             
-            // Configurar la posición del slider (puedes ajustar esto según tus necesidades)
-            sliderInstance.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);  // Por ejemplo, centrado en el Canvas
             
-            // Opcional: Acceder y modificar componentes del slider si es necesario
+            sliderInstance.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);  
+            
+         
             sliderComponent = sliderInstance.GetComponent<Slider>();
                  sliderColor=sliderComponent.GetComponent<SliderColor>();
 
@@ -87,7 +91,7 @@ private bool changeStartcontcourtine=true;
        
             if (sliderComponent != null)
             {
-                sliderComponent.value = 0.5f;  // Establecer el valor inicial del slider, por ejemplo
+                sliderComponent.value = 0.5f; 
             }
               agent.SetDestination(patrolPoints[currentPointIndex].position);
         }
@@ -103,7 +107,7 @@ private bool changeStartcontcourtine=true;
     }
 void OnEnable()
 {
-    // Reinicializar las variables cuando el objeto es activado
+  
     triggerColorchange = true;
     triggerColorchangeStop = false;
     chasing=false;
@@ -112,6 +116,11 @@ void OnEnable()
  changestarStoptcourtine=true;
 changeStoptcourtine=true;
 changeStartcontcourtine=true;
+ changeStoptcourtinestart=true;
+ stop=false;
+ changebackconcourtine=true;
+ changeStocontcourtine=true;
+ changeStocontcourtine=true;
     
 }
     public override void ExecuteBehavior(GameObject obj, bool con)
@@ -120,43 +129,39 @@ changeStartcontcourtine=true;
        
       Vector3 worldPosition = obj.transform.position + offset;
 
-// Asegúrate de que el Slider exista
+
 if (sliderInstance != null)
 {
-    // Establecer la posición del Slider en World Space
+ 
     sliderInstance.transform.position = worldPosition;
 
-    // Ajustar el tamaño (escala) del Slider
-    sliderInstance.GetComponent<RectTransform>().localScale = new Vector3(0.02f, 0.01f, 0.1f);  // Ajusta estos valores para controlar el tamaño
+ 
+    sliderInstance.GetComponent<RectTransform>().localScale = new Vector3(0.02f, 0.01f, 0.1f);  
 
-    // Si necesitas controlar la visibilidad, puedes usar la distancia del objeto con la cámara
+ 
     float distanceToCamera = Vector3.Distance(Camera.main.transform.position, worldPosition);
 
-    // Cambiar la visibilidad del slider según la distancia o según otras condiciones
-    if (distanceToCamera > 0)  // O cualquier otra condición que necesites
+
+    if (distanceToCamera > 0)  
     {
-        sliderCanvasGroup.alpha = 1f;  // Totalmente visible
+        sliderCanvasGroup.alpha = 1f; 
     }
     else
     {
-        sliderCanvasGroup.alpha = 0f;  // Totalmente invisible
+        sliderCanvasGroup.alpha = 0f;  
     }
 }
 if (sliderInstance != null)
 {
-    // Establecer la posición del Slider en World Space
-  
-    // Ajustar el tamaño (escala) del Slider
-      Vector3 directionToPlayer = (player.transform.position - obj.transform.position).normalized;
+    
+      Vector3 directionToCameera= (Camera.main.transform.position - obj.transform.position).normalized;
           
-  // Ajusta estos valores para controlar el tamaño
 
-    // Si necesitas controlar la visibilidad, puedes usar la distancia del objeto con la cámara
-    Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
+    Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToCameera.x, 0, directionToCameera.z));
                  sliderInstance.transform.rotation = Quaternion.Slerp( sliderInstance.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
 
 
-    // Cambiar la visibilidad del slider según la distancia o según otras condiciones
+
 }
         
 
@@ -173,20 +178,33 @@ if (sliderInstance != null)
               
                     if(distanceToPlayer> chaseDistance)
                     {
+                        if(sliderColor.end==true)
+                        {
+                        if( changebackconcourtine)
+                    {
+sliderColor.getChangeColorStop();
+changebackconcourtine=false;
+ stop=true;
+                    }
+                   
+                        }
+                        if(stop==false)
+              {
+                
                         if(triggerColorchangeStop==false)
                         {
                         
 Debug.Log("!");
-                // Calcular la dirección hacia el jugador
+               
                 Vector3 directionToPlayer = (player.transform.position - obj.transform.position).normalized;
           
-                // Crear la rotación basada en la dirección (solo rotar en el eje Y)
+            
                 Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
 
-                // Aplicar la rotación suavemente (opcional)
+           
                 obj.transform.rotation = Quaternion.Slerp(obj.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
 
-                // Moverse hacia el jugador
+              
                 Vector3 direction = (player.transform.position - obj.transform.position).normalized;
                 animator.SetBool("Chase", true);
                 obj.transform.Translate(direction * moveSpeed * Time.deltaTime);
@@ -197,21 +215,25 @@ Debug.Log("!");
                             changeStartcourtine=true;
                             changeStoptcourtine=true;
                             changeStartcontcourtine=true;
+                          
                             Debug.Log("2");
                              sliderColor.triggerColorChange=true;
-             animator.SetBool("Run", true);
-                  Vector3 directionToPlayer = (player.transform.position - obj.transform.position).normalized;
-          
-                // Crear la rotación basada en la dirección (solo rotar en el eje Y)
+                              Vector3 directionToPlayer = (player.transform.position - obj.transform.position).normalized;
+                          
                 Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
 
-                // Aplicar la rotación suavemente (opcional)
+             
                 obj.transform.rotation = Quaternion.Slerp(obj.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
 
-                   obj.transform.Translate(directionToPlayer * attackspeed * Time.deltaTime);
+            
+                Vector3 direction = (player.transform.position - obj.transform.position).normalized;
+               animator.SetBool("Run", true);
+                obj.transform.Translate(direction * attackspeed * Time.deltaTime);
+             
+                  
                            if(changestarStoptcourtine)
                            {
-                            sliderColor.getChangeColorStopStart();
+                            sliderColor.getChangeColorStar();
                             changestarStoptcourtine=false;
                            }
                            }
@@ -220,49 +242,102 @@ Debug.Log("!");
                       Debug.Log("3");
                            
                              chasing=false;
-                              trigger.cambio=true;
                           
+                          trigger2.GetComponent<Pivotetrigger>().change=true;
+                          trigger2.GetComponent<Pivotetrigger>().cambio=true;
                             triggerColorchangeStop=false;
                            
                            }
                             
                         }
             }
+            else{
+ if(sliderColor.triggerColorChangeStop==true)
+                           {
+                            changeStartcourtine=true;
+                            changeStoptcourtine=true;
+                            changeStartcontcourtine=true;
+                          
+                            Debug.Log("4");
+                             sliderColor.triggerColorChange=true;
+             animator.SetBool("Run", false);
+              animator.SetBool("Chase", false);
+                  Vector3 directionToPlayer = (player.transform.position - obj.transform.position).normalized;
+          
+                // Crear la rotación basada en la dirección (solo rotar en el eje Y)
+                Quaternion lookRotation = Quaternion.LookRotation(new Vector3(directionToPlayer.x, 0, directionToPlayer.z));
+
+                // Aplicar la rotación suavemente (opcional)
+                obj.transform.rotation = Quaternion.Slerp(obj.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
+
+                   
+                           if(changeStocontcourtine)
+                           {
+                            sliderColor.getChangeColorStarcon();
+                           changeStocontcourtine=false;
+                           }
+                           }
+                           else
+                           {
+                      Debug.Log("5");
+                           
+                             chasing=false;
+                         trigger2.GetComponent<Pivotetrigger>().change=true;
+                          trigger2.GetComponent<Pivotetrigger>().cambio=true;
+
+                            triggerColorchangeStop=false;
+                            
+                           
+                           }
+                            
+                        }
+            
+            
+                    }
+
               else
             {
-                if(sliderColor.end==true)
+                
+                if(sliderColor.end2==true)
                 {
                      if(changeStoptcourtine)
                     {
 sliderColor.getChangeColorbackStop();
 changeStoptcourtine=false;
+ chasing=true;
                     }
-                    chasing=true;
+                   
                 }
+             
                 if(chasing==false)
                 {
+                   
+                       
                 
-                triggerColorchangeStop=true;
                 if(sliderColor.triggerColorChange==true)
                             {
                               changestarStoptcourtine=true;
-             
-                           Debug.Log("4");     
+             changestarStoptcourtine=true;
+                   changeStocontcourtine=true;
+                     sliderColor.triggerColorChangeStop=true;
+                    
+                           Debug.Log("6");     
              animator.SetBool("Chase", false);
                  animator.SetBool("Run", false);
                  agent.isStopped=true;
              
 if(changeStartcourtine)
 {
-                 sliderColor.getChangeColorStar();
+                 sliderColor.getChangeColorStopStart();
+                 stop=false;
                  changeStartcourtine=false;
 }
 
 
                             }
                             else{
-
-         Debug.Log("5");
+triggerColorchangeStop=true;
+         Debug.Log("7");
                  animator.SetBool("Run", true);
                   Vector3 directionToPlayer = (player.transform.position - obj.transform.position).normalized;
           
@@ -278,13 +353,17 @@ if(changeStartcourtine)
             
             }
             else{
-                  triggerColorchangeStop=true;
+                
+                      
+                
                 if(sliderColor.triggerColorChange==true)
                 {
-                    changestarStoptcourtine=true;
-                
-                           Debug.Log("6"); 
-                         
+                     triggerColorchangeStop=true;
+                   changestarStoptcourtine=true;
+                    changeStocontcourtine=true;
+                     sliderColor.triggerColorChangeStop=true;
+                           Debug.Log("8"); 
+                        
                Vector3 directionToPlayer = (player.transform.position - obj.transform.position).normalized;
           
                 // Crear la rotación basada en la dirección (solo rotar en el eje Y)
@@ -294,17 +373,18 @@ if(changeStartcourtine)
                 obj.transform.rotation = Quaternion.Slerp(obj.transform.rotation, lookRotation, Time.deltaTime * rotationSpeed);
 
                  Vector3 direction = (player.transform.position - obj.transform.position).normalized;
-                obj.transform.Translate(direction * attackspeed *2 * Time.deltaTime);
+                obj.transform.Translate(direction * attackspeed  * Time.deltaTime);
                  animator.SetBool("Run", true);
                  agent.isStopped=true;
                if(changeStartcontcourtine)
                {
- sliderColor.getChangeColorStarcon();
+ sliderColor.getChangeColorbackcon();
  changeStartcontcourtine=false;
                }
             }
             else{
- Debug.Log("7");  
+ Debug.Log("9");  
+   triggerColorchangeStop=true;
                  animator.SetBool("Run", true);
                   Vector3 directionToPlayer = (player.transform.position - obj.transform.position).normalized;
           
@@ -323,7 +403,7 @@ if(changeStartcourtine)
         
     }
     else{
-          Debug.Log("8");
+          Debug.Log("10");
 Patrol();
 
     }
@@ -334,15 +414,16 @@ Patrol();
     {
          agent.isStopped=false;
      animator.SetBool("Chase", true);
-         // Si ya estamos cerca del destino actual, asignamos el siguiente punto
+     
+
     if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
     {
-        currentPointIndex = (currentPointIndex + 1) % patrolPoints.Length; // Avanzar al siguiente punto de patrullaje
+        currentPointIndex = (currentPointIndex + 1) % patrolPoints.Length; 
         agent.isStopped = false;
-        agent.SetDestination(patrolPoints[currentPointIndex].position); // Establecer el nuevo destino
+        agent.SetDestination(patrolPoints[currentPointIndex].position); 
     }
 
-    // Cambiar la animación solo si el agente está en movimiento
+ 
     if (agent.velocity.sqrMagnitude > 0)
     {
         animator.SetBool("Chase", true);
