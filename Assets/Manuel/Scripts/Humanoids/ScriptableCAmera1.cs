@@ -130,6 +130,7 @@ if (sliderInstance != null)
                 back=true;
                     backstop=true;
                     backcon=true;
+                    chase=false;
                 if(sliderColor.end2)
                 {
                     if(starstop==true)
@@ -167,7 +168,7 @@ else{
                }
 else 
     {
-       
+       chase=false;
                     starstop=true;
                     start=true;
                     startcon=true;
